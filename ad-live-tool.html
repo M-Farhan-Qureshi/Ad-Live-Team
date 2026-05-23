@@ -24,6 +24,7 @@
   .page{max-width:1180px;margin:0 auto}
   .wrapper{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
   @media(max-width:900px){.wrapper{grid-template-columns:1fr}}
+  .left-col{display:flex;flex-direction:column;gap:20px}
 
   .topbar{display:flex;flex-direction:row;align-items:center;gap:16px;margin-bottom:22px;flex-wrap:wrap}
   .topbar .mark{display:inline-flex;align-items:center;justify-content:center;background:#fff;border-radius:12px;border:1px solid var(--line);box-shadow:0 3px 12px rgba(15,23,42,.10);padding:9px 16px;flex-shrink:0}
@@ -168,11 +169,17 @@
   .fetch-fill{position:absolute;left:0;top:0;bottom:0;width:0;background:rgba(255,255,255,.22);transition:width .25s ease}
   .fetch-label{position:relative;z-index:1;display:flex;align-items:center;justify-content:center;gap:7px}
   .fetch-btn.busy{cursor:wait}
+  .fetch-btn.ready{background:var(--green)}
+  .fetch-btn.ready:hover{background:#155f37}
   .fetch-btn:hover{background:var(--pw-blue-dark)}
   .gen-btn{background:var(--pw-red);color:#fff;border:none;padding:15px;cursor:pointer;width:100%;border-radius:9px;font-weight:800;font-size:15px;margin-top:8px;transition:background .15s,transform .1s;display:flex;align-items:center;justify-content:center;gap:9px}
   .gen-btn:hover{background:var(--pw-red-dark)}
   .gen-btn:active{transform:scale(.99)}
   .gen-btn:disabled{background:#c4a0a0;cursor:not-allowed}
+  .gen-btn{position:relative;overflow:hidden}
+  .gen-fill{position:absolute;left:0;top:0;bottom:0;width:0;background:rgba(255,255,255,.22);transition:width .25s ease}
+  .gen-label{position:relative;z-index:1;display:flex;align-items:center;justify-content:center;gap:9px}
+  .gen-btn.busy{cursor:wait}
   .btnrow{display:flex;gap:10px;margin-top:8px}
   .btnrow .gen-btn{flex:1;margin-top:0}
   .reset-btn{flex-shrink:0;background:#fff;color:#555;border:1.5px solid var(--line);border-radius:9px;padding:0 16px;font-weight:700;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:7px;transition:.15s}
@@ -266,6 +273,19 @@
 
   .protip{margin-top:16px;font-size:12px;color:#777;background:#f7f9fc;border:1px solid var(--line);padding:12px 14px;border-radius:9px;line-height:1.5}
   .protip strong{color:var(--ink)}
+  .stage-row{display:flex;gap:7px;margin-bottom:12px;flex-wrap:wrap}
+  .stage{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:700;padding:5px 10px;border-radius:7px;background:#eef1f5;color:#8a93a3;border:1.5px solid var(--line);transition:.2s}
+  .stage .stage-dot{width:7px;height:7px;border-radius:50%;background:#b9c2d0;flex-shrink:0}
+  .stage.work{background:#fdf3d3;border-color:#ecc94e;color:#8a5a00}
+  .stage.work .stage-dot{background:#e0a800;animation:pulse 1s infinite}
+  .stage.done{background:#e6f4ea;border-color:#4caf72;color:#1b7a44}
+  .stage.done .stage-dot{background:#1b7a44}
+  body.dark .stage{background:#232834;border-color:#3a4152;color:#8b94a3}
+  body.dark .stage .stage-dot{background:#4a5468}
+  body.dark .stage.work{background:#322a14;border-color:#6b5a23;color:#ffd56b}
+  body.dark .stage.work .stage-dot{background:#ffd56b}
+  body.dark .stage.done{background:#16291d;border-color:#2f6f4e;color:#7ee0a5}
+  body.dark .stage.done .stage-dot{background:#7ee0a5}
   .rsub{font-size:12px;color:var(--muted);margin-bottom:14px;line-height:1.5}
   #research-out .doc{padding:6px 4px}
   #research-out .placeholder{display:grid;place-items:center;text-align:center;color:var(--muted);padding:20px}
@@ -297,7 +317,9 @@
   </div>
 
   <div class="wrapper">
-  <!-- INPUT (left column) -->
+  <!-- LEFT COLUMN: input + seller pitch -->
+  <div class="left-col">
+  <!-- INPUT -->
   <div class="panel">
     <div class="head-row">
       <h2 style="margin:0">PakWheels Inspection / Ad / Auction Sheet Link</h2>
@@ -325,11 +347,6 @@
         <div class="tag opt-green">Auction Sheet<small>Optional</small></div>
         <input type="text" id="link-auction" placeholder="Auction sheet link (optional)">
       </div>
-
-      <button class="fetch-btn" id="fetchBtn" onclick="tryFetch()">
-        <span class="fetch-fill" id="fetchFill"></span>
-        <span class="fetch-label" id="fetchLabel"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M21 12a9 9 0 1 1-6.2-8.5"/><path d="M21 3v6h-6"/></svg> Fetch &amp; Analyze Inspection Report</span>
-      </button>
     </div>
 
     <!-- COMPULSORY: Vehicle & Documentation Details -->
@@ -441,9 +458,9 @@
     </div>
 
     <div class="btnrow">
-      <button class="gen-btn" id="genBtn" onclick="generateAd()">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M13 3l2.5 6.5L22 12l-6.5 2.5L13 21l-2.5-6.5L4 12l6.5-2.5L13 3z"/></svg>
-        Generate Ad Description
+      <button class="gen-btn" id="genBtn" onclick="runAll()">
+        <span class="gen-fill" id="genFill"></span>
+        <span class="gen-label" id="genLabel"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M13 3l2.5 6.5L22 12l-6.5 2.5L13 21l-2.5-6.5L4 12l6.5-2.5L13 3z"/></svg> Generate Ad Description</span>
       </button>
       <button class="reset-btn" id="resetBtn" onclick="resetForm()" type="button">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M3 2v6h6M21 12A9 9 0 0 0 6 5.3L3 8"/><path d="M21 22v-6h-6M3 12a9 9 0 0 0 15 6.7l3-2.7"/></svg>
@@ -452,11 +469,33 @@
     </div>
   </div>
 
+  <!-- SELLER PITCH (separate card, under the input column) -->
+  <div class="panel" id="pitchPanel">
+    <div class="preview-head">
+      <h2 style="margin:0;color:#7a3ea1">📞 Seller Pitch — Call &amp; Negotiation Aid</h2>
+      <span class="copy-tag" onclick="copyPitch()" style="background:#f0e6f8;color:#7a3ea1">📋 Copy</span>
+    </div>
+    <div class="rsub">When you call the customer, these honest talking points (based on the inspection findings) help you justify and negotiate the price. They appear here after you generate.</div>
+    <div id="pitch-out" class="doc"><div class="placeholder" style="height:120px"><p>Negotiation points will appear here after you Generate the description.</p></div></div>
+  </div>
+  </div><!-- /left-col -->
+
   <!-- PREVIEW (right column) -->
   <div class="panel" id="previewPanel">
     <div class="preview-head">
-      <h2 style="margin:0"><span class="ic" style="background:var(--pw-blue)">2</span> Your Ad Description — Ready to Review</h2>
+      <h2 style="margin:0">SIFM Ad Description</h2>
       <span class="copy-tag" onclick="copyDesc()">📋 Copy</span>
+    </div>
+    <div class="protip" style="margin-top:0;margin-bottom:14px">
+      <strong>Honest selling tip:</strong> Mentioning small faults along with the car's strong points builds buyer trust — and trust helps close the deal. This tool never adds fake features or hides real faults.
+    </div>
+    <div class="stage-row" id="stageRow">
+      <div class="stage" id="st-wait"><span class="stage-dot"></span>Waiting for Report</div>
+      <div class="stage" id="st-fetch"><span class="stage-dot"></span>Fetching</div>
+      <div class="stage" id="st-ad"><span class="stage-dot"></span>Reading PW Ad</div>
+      <div class="stage" id="st-analyze"><span class="stage-dot"></span>Analyzing Report</div>
+      <div class="stage" id="st-create"><span class="stage-dot"></span>Creating</div>
+      <div class="stage" id="st-done"><span class="stage-dot"></span>Listing Ready</div>
     </div>
     <div class="statusline">
       <span class="dot" id="dot"></span><span id="statusText">Waiting for report</span>
@@ -465,11 +504,8 @@
     <div id="final-desc">
       <div class="placeholder">
         <div class="em">🚘</div>
-        <p>Paste the CarSure link (and key, top-right), then <strong>Generate</strong>. You'll get the full buyer-ready breakdown plus the car's features and documentation.</p>
+        <p>Paste the Inspection Report link (and key, top-right), then <strong>Generate</strong>. You'll get the full buyer-ready breakdown plus the car's features and documentation.</p>
       </div>
-    </div>
-    <div class="protip">
-      <strong>Honest selling tip:</strong> Mentioning small faults along with the car's strong points builds buyer trust — and trust helps close the deal. This tool never adds fake features or hides real faults.
     </div>
 
     <!-- RESEARCH WINDOW (under preview, only when enabled) -->
@@ -494,9 +530,12 @@
 <script>
 const $ = id => document.getElementById(id);
 const out=$('final-desc'), dot=$('dot'), statusText=$('statusText'), wc=$('wc');
-let lastPlainText='', lastResearch='', lastAdText='';
+let lastPlainText='', lastResearch='', lastAdText='', lastPitch='';
 
 function setStatus(s,t){ dot.className='dot'+(s?' '+s:''); statusText.textContent=t; }
+// stage boxes: state = 'idle' | 'work' | 'done'
+function setStage(id, state){ const el=$('st-'+id); if(!el) return; el.classList.remove('work','done'); if(state==='work') el.classList.add('work'); else if(state==='done') el.classList.add('done'); }
+function resetStages(){ ['wait','fetch','ad','analyze','create','done'].forEach(id=>setStage(id,'idle')); setStage('wait','work'); }
 function toast(m){ const t=$('toast'); t.textContent=m; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),1600); }
 
 /* API key */
@@ -510,6 +549,7 @@ function onRemember(){ const k=$('apiKey').value.trim(); if(!k){toast('Enter a k
 (function(){ try{ const k=localStorage.getItem(KEY_STORE); if(k) $('apiKey').value=k; }catch(e){} })();
 $('apiKey').addEventListener('input',refreshKeyState);
 refreshKeyState();
+setStage('wait','work');
 
 function toggleAcc(){ $('accAdv').classList.toggle('open'); }
 function toggleTheme(){ const d=document.body.classList.toggle('dark'); $('themeIcon').textContent=d?'☀️':'🌙'; $('themeLabel').textContent=d?'Light Mode':'Dark Mode'; }
@@ -526,7 +566,12 @@ function resetForm(){
   if($('pdfInput')) $('pdfInput').value='';
   if($('pdfStatus')){ $('pdfStatus').textContent=''; $('pdfStatus').className='pdfstatus'; }
   if($('pdfDropText')) $('pdfDropText').textContent='Click to choose a PDF inspection report';
+  resetGenBtn();
+  resetStages();
+  if($('pitch-out')) $('pitch-out').innerHTML='<div class="placeholder" style="height:120px"><p>Negotiation points will appear here after you Generate the description.</p></div>';
+  lastPitch='';
   window.__adText='';
+  window.__auctionText='';
   lastPlainText='';
   out.innerHTML='<div class="placeholder"><div class="em">🚘</div><p>Paste the Inspection Report link (and key, top-right), then <strong>Generate</strong>. You\'ll get the full buyer-ready breakdown plus the car\'s features and documentation.</p></div>';
   setStatus('','Waiting for report'); wc.textContent='';
@@ -590,13 +635,14 @@ async function handlePdf(file){
   }
 }
 
-function setFetchProgress(pct, labelText){
-  $('fetchFill').style.width = Math.max(0,Math.min(100,pct))+'%';
-  if(labelText!==undefined) $('fetchLabel').innerHTML = labelText;
+function setGenProgress(pct, labelText){
+  $('genFill').style.width = Math.max(0,Math.min(100,pct))+'%';
+  if(labelText!==undefined) $('genLabel').innerHTML = labelText;
 }
-function resetFetchBtn(){
-  $('fetchBtn').classList.remove('busy');
-  setFetchProgress(0, '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M21 12a9 9 0 1 1-6.2-8.5"/><path d="M21 3v6h-6"/></svg> Fetch &amp; Analyze Inspection Report');
+function resetGenBtn(){
+  $('genBtn').classList.remove('busy');
+  $('genBtn').disabled=false;
+  setGenProgress(0, '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M13 3l2.5 6.5L22 12l-6.5 2.5L13 21l-2.5-6.5L4 12l6.5-2.5L13 3z"/></svg> Generate Ad Description');
 }
 
 // fetch a single URL through the proxy list; returns extracted text or null
@@ -623,55 +669,89 @@ async function fetchViaProxies(url, onStep){
   return null;
 }
 
-async function tryFetch(){
-  const url=$('ad-link').value.trim();
-  if(!url){ flagLink(); toast('Paste the Inspection Report link first'); return; }
-  const adUrl=$('link-ad').value.trim();
-  const twoPhase = !!adUrl;
+// ONE button does it all: fetch → analyze → generate
+async function runAll(){
+  const link=$('ad-link').value.trim();
+  const key=$('apiKey').value.trim();
+  if(!key){ toast('Enter your API key (top-right)'); $('apiKey').focus(); setStatus('err','API key required'); return; }
 
-  $('fetchBtn').classList.add('busy');
-  setStatus('work','Fetching inspection report…');
+  // if there's no pasted report yet, we need a link to fetch from
+  let report=$('v-report').value.trim();
+  if(!report && !link){ flagLink(); toast('Add the Inspection Report link, or paste the report in Additional Options'); setStatus('err','Need a link or pasted report'); return; }
 
-  // ----- Phase 1: inspection report -----
-  setFetchProgress(8, 'Fetching inspection report… 8%');
-  const reportText = await fetchViaProxies(url, (i,n)=>{
-    const pct = 8 + Math.round((i/n) * (twoPhase?42:82)); // up to 50% (or 90% if no ad)
-    setFetchProgress(pct, 'Fetching inspection report… '+pct+'%');
-  });
+  $('genBtn').classList.add('busy'); $('genBtn').disabled=true;
+  resetStages();
+  setStage('wait','done');
 
-  if(!reportText){
-    setFetchProgress(0);
-    resetFetchBtn();
-    setStatus('err','Auto-fetch blocked — open Additional Options to paste');
-    toast('Auto-fetch failed. Open Additional Options and paste the report.');
-    return;
-  }
-  $('v-report').value = reportText;
-  setFetchProgress(twoPhase?52:92, twoPhase?'Report loaded — reading ad… 52%':'Report loaded… 92%');
-
-  // ----- Phase 2: ad link (only if provided) -----
-  if(twoPhase){
-    setStatus('work','Reading PW ad…');
-    const adText = await fetchViaProxies(adUrl, (i,n)=>{
-      const pct = 52 + Math.round((i/n) * 40); // 52% → 92%
-      setFetchProgress(pct, 'Reading PW ad… '+pct+'%');
+  // ----- FETCH (only if we don't already have report text and a link exists) -----
+  if(!report && link){
+    const adUrl=$('link-ad').value.trim();
+    const twoPhase=!!adUrl;
+    setStage('fetch','work');
+    setStatus('work','Fetching inspection report…');
+    setGenProgress(8, 'Fetching… 8%');
+    const reportText = await fetchViaProxies(link, (i,n)=>{
+      const pct=8+Math.round((i/n)*(twoPhase?28:42));
+      setGenProgress(pct, 'Fetching report… '+pct+'%');
     });
-    if(adText){
-      // store the ad text so the prompt can use it to avoid repeating ad features
-      window.__adText = adText.slice(0, 4000);
-      toast('Report + ad fetched.');
-    } else {
-      window.__adText = '';
-      toast('Report fetched (ad could not be read).');
+    if(!reportText){
+      setStage('fetch','idle');
+      resetGenBtn();
+      setStatus('err','Couldn\'t read the link — paste the report in Additional Options');
+      $('accAdv').classList.add('open');
+      toast('Auto-fetch blocked. Paste the report in Additional Options, then Generate.');
+      return;
     }
+    $('v-report').value=reportText; report=reportText;
+    setStage('fetch','done');
+
+    // ----- READING PW AD (only if ad link provided) -----
+    if(twoPhase){
+      setStage('ad','work');
+      setStatus('work','Reading PW ad…');
+      setGenProgress(48, 'Reading ad… 48%');
+      const adText=await fetchViaProxies(adUrl, (i,n)=>{
+        const pct=48+Math.round((i/n)*16);
+        setGenProgress(pct, 'Reading ad… '+pct+'%');
+      });
+      window.__adText = adText ? adText.slice(0,4000) : '';
+      setStage('ad','done');
+    } else { window.__adText=''; }
+
+    // ----- READING AUCTION SHEET (only if auction link provided) -----
+    const auctionUrl=$('link-auction').value.trim();
+    if(auctionUrl){
+      setStatus('work','Reading auction sheet…');
+      setGenProgress(66, 'Reading auction sheet… 66%');
+      const auctionText=await fetchViaProxies(auctionUrl, (i,n)=>{
+        const pct=66+Math.round((i/n)*6);
+        setGenProgress(pct, 'Reading auction sheet… '+pct+'%');
+      });
+      window.__auctionText = auctionText ? auctionText.slice(0,3000) : '';
+    } else { window.__auctionText=''; }
   } else {
-    window.__adText = '';
-    toast('Inspection report fetched.');
+    setStage('fetch','done');
+    if($('link-ad').value.trim()) setStage('ad','done');
+    window.__auctionText = window.__auctionText || '';
   }
 
-  setFetchProgress(100, '✓ Data fetched — fill details, then Generate');
-  setStatus('live','Report ready — fill details &amp; generate');
-  setTimeout(resetFetchBtn, 2200);
+  // ----- ANALYZING REPORT -----
+  setStage('analyze','work');
+  setStatus('work','Analyzing report…');
+  setGenProgress(74, 'Analyzing… 74%');
+  await new Promise(r=>setTimeout(r,300));
+  setStage('analyze','done');
+
+  // ----- CREATING -----
+  setStage('create','work');
+  setGenProgress(88, 'Creating listing… 88%');
+  await generateAd(true); // progress UI already running
+  setStage('create','done');
+
+  // ----- LISTING READY -----
+  setStage('done','done');
+  setGenProgress(100, '✓ Listing ready');
+  setTimeout(resetGenBtn, 900);
 }
 function flagLink(){ const i=$('ad-link'); i.classList.add('invalid'); setTimeout(()=>i.classList.remove('invalid'),2000); }
 
@@ -687,6 +767,7 @@ function buildPrompt(){
   if(linkAd) extra+=`\nPW Ad link (ALREADY PUBLIC): ${linkAd}\nIMPORTANT: Features/details already visible in this public ad do NOT need repeating in the description. Focus the description on what the ad does NOT already cover, or on confirming inspection-backed condition.`;
   if(window.__adText) extra+=`\nFetched PW ad content (features already shown publicly — do NOT repeat these, only add what's missing):\n"""\n${window.__adText}\n"""`;
   if(linkAuction) extra+=`\nAuction sheet link: ${linkAuction}`;
+  if(window.__auctionText) extra+=`\nFetched AUCTION SHEET content — extract and use these if present: import/auction GRADE (e.g. 4, 4.5, R, RA), auction/import DATE, auction HOUSE name, and any condition notes/map markings. Mention them in the description and documentation so the buyer understands the auction-verified condition. Use ONLY what actually appears here; if a value isn't present, don't invent it:\n"""\n${window.__auctionText}\n"""`;
   if(maint) extra+=`\nMaintenance history (seller-provided): ${maint}`;
   if(mods) extra+=`\nAftermarket/mods (seller-provided): ${mods}`;
   const xtra=$('d-extra').value.trim();
@@ -731,7 +812,9 @@ STRUCTURE (exact order):
 
 6. IF "Vehicle & documentation details (provided)" appear in context, add <h2 class="feat">Vehicle &amp; Documentation Details</h2> + a <ul> in a clean compact style (one item per line, like: "Manufacture 2014", "Import 2018", "Registered 2018", "Token Tax Paid", "Number plates available", "Documents available", "2 keys available", "PakWheels inspected car"). Use ONLY provided values; never guess. Omit if none provided.
 
-7. <h2 class="feat">Final Listing Description</h2> + <div class="listing-box"> with short <p> in simple, plain, trustworthy language (like a real seller writing an honest ad — short lines are fine). CRITICAL LENGTH RULE: the description text (everything inside listing-box EXCLUDING the final disclaimer line) MUST be UNDER ${cap} CHARACTERS (character count, not words — PakWheels enforces this). Count and trim to fit. Weave in documentation details naturally. The VERY LAST element inside the listing-box MUST be this exact line as its own <p class="tagline"> (you MAY gently simplify the wording for buyer clarity but keep the full meaning): "The report reflects the vehicle's condition at the time of inspection; the inspection date is mentioned in the report for reference. As the vehicle remains in the seller's use, its condition may vary over time. A Pre-Delivery Inspection (PDI) is recommended at the time of transaction to ensure transparency."
+6b. IF auction sheet content was fetched and contains real data, add <h2 class="feat">Auction Sheet — Verified Condition</h2> + a <ul> listing what was actually found: import/auction Grade, auction/import Date, Auction House (if named), and key condition notes. Add one plain sentence explaining how the auction grade reflects the car's original imported condition (helps the buyer trust the car). Use ONLY values present in the fetched sheet — never invent a grade, date, or house name. Omit this section entirely if no auction data was found.
+
+7. <h2 class="feat">Final Listing Description</h2> + <div class="listing-box"> with short <p> in simple, plain, trustworthy language (like a real seller writing an honest ad — short lines are fine). HARD LENGTH LIMIT — NON-NEGOTIABLE: the description text (everything inside listing-box EXCLUDING the final disclaimer line) MUST be at most ${cap} CHARACTERS (count every character — letters, spaces, punctuation — NOT words). This is a strict ceiling enforced by PakWheels. Before finishing, COUNT the characters and if you are over ${cap}, rewrite shorter until it fits. Aim for about ${Math.round(cap*0.9)} characters to leave a safe margin. Weave in documentation details and any auction grade/condition naturally. The VERY LAST element inside the listing-box MUST be this exact line as its own <p class="tagline"> (you MAY gently simplify the wording for buyer clarity but keep the full meaning): "The report reflects the vehicle's condition at the time of inspection; the inspection date is mentioned in the report for reference. As the vehicle remains in the seller's use, its condition may vary over time. A Pre-Delivery Inspection (PDI) is recommended at the time of transaction to ensure transparency."
 
 8. <h2 class="pitch">Seller Pitch — Negotiation Notes (internal)</h2> + <div class="pitch-box"> with a short <p> intro then a <ul>: based on the WORST findings in the inspection report, give the agent practical talking points to negotiate the price DOWN with the seller/buyer (e.g. which faults justify a price reduction, rough cost impact, what to point out). For each point, suggest in plain words what reference photo or report section to show (e.g. "show the dented rear-left door photo from the report"). This section is the agent's internal aid — keep it candid and practical.
 
@@ -742,17 +825,19 @@ CONTEXT:${extra}
 ${basis}`;
 }
 
-async function generateAd(){
+async function generateAd(fromRunAll){
   const link=$('ad-link').value.trim();
-  if(!link){ flagLink(); toast('PakWheels Inspection Report link is required'); setStatus('err','Inspection report link required'); $('ad-link').focus(); return; }
-  const key=$('apiKey').value.trim();
-  if(!key){ toast('Enter your API key (top-right)'); $('apiKey').focus(); setStatus('err','API key required'); return; }
   const report=$('v-report').value.trim();
-  if(!report && !confirm('No report text was pasted. The link alone often can\'t be read by the browser, so results may be limited.\n\nContinue anyway? (Recommended: paste the report under Additional Options.)')) return;
+  if(!fromRunAll){
+    const key0=$('apiKey').value.trim();
+    if(!key0){ toast('Enter your API key (top-right)'); $('apiKey').focus(); setStatus('err','API key required'); return; }
+    if(!report && !link){ flagLink(); toast('Add the Inspection Report link, or paste the report in Additional Options'); setStatus('err','Need a link or pasted report'); return; }
+  }
+  const key=$('apiKey').value.trim();
 
-  $('genBtn').disabled=true;
+  if(!fromRunAll){ $('genBtn').disabled=true; }
   setStatus('work','Analyzing report…'); wc.textContent='';
-  out.innerHTML=`<div class="loading"><div style="text-align:center"><div class="spin"></div><p style="font-weight:700">Building your listing…</p><small style="color:#888">Phase 1 good · Phase 2 attention · Phase 3 features</small></div></div>`;
+  out.innerHTML=`<div class="loading"><div style="text-align:center"><div class="spin"></div><p style="font-weight:700">Building your listing…</p><small style="color:#888">Why to buy · Things to note · Features</small></div></div>`;
   try{
     const res=await fetch("https://api.anthropic.com/v1/messages",{
       method:"POST",
@@ -766,6 +851,23 @@ async function generateAd(){
     let html=data.content.filter(b=>b.type==="text").map(b=>b.text).join("\n").trim();
     html=html.replace(/^```html\s*/i,'').replace(/^```\s*/,'').replace(/```$/,'').trim();
     out.innerHTML=`<div class="doc">${html}</div>`;
+
+    // ---- Move the Seller Pitch out of the preview into the left-column call aid ----
+    const docEl = out.querySelector('.doc');
+    let pitchHeading=null;
+    docEl.querySelectorAll('h2').forEach(h=>{ if(h.classList.contains('pitch')) pitchHeading=h; });
+    if(pitchHeading){
+      const pitchBox = pitchHeading.nextElementSibling; // the .pitch-box
+      const pOut = $('pitch-out');
+      pOut.innerHTML='';
+      if(pitchBox){ pOut.appendChild(pitchBox.cloneNode(true)); pitchBox.remove(); }
+      pitchHeading.remove();
+      lastPitch = pOut.innerText.trim();
+    } else {
+      $('pitch-out').innerHTML='<div class="placeholder" style="height:120px"><p>No major negotiation points were flagged for this car.</p></div>';
+      lastPitch='';
+    }
+
     lastPlainText=out.innerText.trim();
     // The Copy button should copy ONLY the final ad description (the listing-box),
     // NOT the car name, rating, or the internal Seller Pitch.
@@ -781,22 +883,27 @@ async function generateAd(){
       var descChars=lastPlainText.length;
     }
     const cap=parseInt($('wordcap').value)||995;
-    wc.textContent=descChars+' / '+cap+' chars';
-    wc.style.color = descChars>cap ? 'var(--pw-red)' : 'var(--muted)';
-    setStatus('live','Listing ready'); toast('Listing generated!');
+    const over = descChars>cap;
+    wc.textContent=descChars+' / '+cap+' chars'+(over?' ⚠ over limit':'');
+    wc.style.color = over ? 'var(--pw-red)' : 'var(--muted)';
+    wc.style.fontWeight = over ? '800' : '';
+    setStatus('live', over ? 'Ready — but description is over the character limit' : 'Listing ready');
+    if(over) toast('Description is over '+cap+' chars — consider regenerating or trimming.');
+    else toast('Listing generated!');
     if($('doResearch').checked) runResearch(key);
   }catch(err){
     const msg=err.message||String(err);
     const net=/Failed to fetch|NetworkError|Load failed/i.test(msg);
     out.innerHTML=`<div class="errbox"><b>Couldn't generate the listing</b>${net?"Network blocked the request. Check you're online and the API key is valid. Some networks block api.anthropic.com.":msg}</div>`;
     setStatus('err','Error — try again');
-  }finally{ $('genBtn').disabled=false; }
+  }finally{ if(!fromRunAll){ $('genBtn').disabled=false; } }
 }
 
 function copyDesc(){ if(!lastAdText){ toast('Generate a listing first'); return; } navigator.clipboard.writeText(lastAdText).then(()=>toast('Ad description copied!')); }
 
 function setRStatus(s,t){ $('rdot').className='dot'+(s?' '+s:''); $('rStatus').textContent=t; }
 function copyResearch(){ if(!lastResearch){ toast('Run research first'); return; } navigator.clipboard.writeText(lastResearch).then(()=>toast('Research copied!')); }
+function copyPitch(){ if(!lastPitch){ toast('Generate first'); return; } navigator.clipboard.writeText(lastPitch).then(()=>toast('Pitch notes copied!')); }
 
 async function runResearch(key){
   const panel=$('researchPanel'); panel.style.display='block';
