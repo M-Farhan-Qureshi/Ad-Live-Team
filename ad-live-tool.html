@@ -25,6 +25,7 @@
   .wrapper{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
   @media(max-width:900px){.wrapper{grid-template-columns:1fr}}
   .left-col{display:flex;flex-direction:column;gap:20px}
+  .right-col{display:flex;flex-direction:column;gap:20px}
 
   .topbar{display:flex;flex-direction:row;align-items:center;gap:16px;margin-bottom:22px;flex-wrap:wrap}
   .topbar .mark{display:inline-flex;align-items:center;justify-content:center;background:#fff;border-radius:12px;border:1px solid var(--line);box-shadow:0 3px 12px rgba(15,23,42,.10);padding:9px 16px;flex-shrink:0}
@@ -33,17 +34,61 @@
   .topbar h1{font-size:25px;font-weight:800;letter-spacing:-.01em;margin:0}
   .topbar .internal{font-size:11px;font-weight:800;color:#fff;background:var(--pw-red);padding:5px 14px;border-radius:20px;letter-spacing:.05em;text-transform:uppercase}
 
-  .keymini{margin-left:auto;display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0}
-  .keymini .kline{display:flex;gap:6px;align-items:center}
-  .keymini input{width:230px;padding:8px 10px;border:1.5px solid var(--line);border-radius:8px;font-family:monospace;font-size:12px;background:#fff}
+  .keymini{margin-left:auto;display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex-shrink:0}
+  .keymini .kline{display:flex;gap:6px;align-items:center;width:300px}
+  .keymini .kline input{flex:1}
+  .keymini .kline #keySave{flex-shrink:0}
+  .keymini input{width:100%;padding:8px 10px;border:1.5px solid var(--line);border-radius:8px;font-family:monospace;font-size:12px;background:#fff}
   .keymini input:focus{outline:none;border-color:var(--pw-blue);box-shadow:0 0 0 3px rgba(13,71,161,.12)}
   .keymini button{background:#eef1f5;border:1.5px solid var(--line);border-radius:7px;padding:8px 10px;font-size:11.5px;font-weight:700;cursor:pointer;color:#444}
   .keymini button:hover{background:#e3e7ec}
+  /* Smart connect button states */
+  #keySave{transition:background .25s,border-color .25s,color .25s,box-shadow .25s;min-width:104px;justify-content:center}
+  #keySave.s-connecting{background:#fdf3d3;border-color:#e0b94e;color:#8a5a00;cursor:wait}
+  #keySave.s-connected{background:#e6f4ea;border-color:#1b7a44;color:#1b7a44;box-shadow:0 0 0 3px rgba(27,122,68,.18)}
+  #keySave.s-error{background:#fdecec;border-color:#d77;color:#a3251c;box-shadow:0 0 0 3px rgba(192,57,43,.14)}
+  #keySave .mini-spin{display:inline-block;width:11px;height:11px;border:2px solid rgba(138,90,0,.3);border-top-color:#8a5a00;border-radius:50%;animation:spin .7s linear infinite;margin-right:5px;vertical-align:-1px}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  body.dark #keySave.s-connecting{background:#3a3214;border-color:#7a6520;color:#ffd56b}
+  body.dark #keySave.s-connected{background:#16331f;border-color:#2e7d4a;color:#7ee0a5;box-shadow:0 0 0 3px rgba(126,224,165,.22)}
+  body.dark #keySave.s-error{background:#3a1e1a;border-color:#7a3028;color:#ffb4a8;box-shadow:0 0 0 3px rgba(255,123,106,.18)}
   .keymini .khint{font-size:10.5px;color:var(--muted)}
+  .keydetect{font-size:10.5px;font-weight:700;margin-top:3px;min-height:13px}
+  .provider-detail{font-size:11px;line-height:1.5;border-radius:8px;padding:8px 11px;margin:8px 0 2px;max-width:300px}
+  .provider-detail code{padding:1px 5px;border-radius:3px;font-size:10.5px;background:rgba(0,0,0,.06)}
+  .provider-detail a{text-decoration:underline}
+  .provider-detail .muted{opacity:.7}
+  .provider-detail.pd-claude{background:#fdecec;border:1px solid #f0c0c0;color:#7a2520}
+  .provider-detail.pd-claude a{color:#a3251c}
+  .provider-detail.pd-gemini{background:#f4ecfa;border:1px solid #ddc5ec;color:#5a2a7a}
+  .provider-detail.pd-gemini a{color:#7a3ea1}
+  .provider-detail.pd-groq{background:#fdf6e3;border:1px solid #ecd9a8;color:#7a5a10}
+  .provider-detail.pd-groq a{color:#9a7510}
+  body.dark .provider-detail.pd-claude{background:#3a1e1a;border-color:#7a3028;color:#ffb4a8}
+  body.dark .provider-detail.pd-gemini{background:#2a1f38;border-color:#4a3a5e;color:#d9bff0}
+  body.dark .provider-detail.pd-groq{background:#2e2814;border-color:#5e5223;color:#ffd56b}
+  body.dark .provider-detail code{background:rgba(255,255,255,.12)}
+  .my-field{display:flex;gap:6px}
+  .my-field select{flex:1;min-width:0}
+  .my-field .my-mon{flex:1.3}
+  .keydetect.ok{color:#1b7a44}
+  .keydetect.warn{color:#b07a00}
+  body.dark .keydetect.ok{color:#7ee0a5}
+  body.dark .keydetect.warn{color:#ffd56b}
   .keymini .khint a{color:var(--pw-blue)}
   .keymini .kdot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#e0b4ad;margin-right:3px;vertical-align:middle}
   .keymini.ok .kdot{background:var(--green)}
-  @media(max-width:620px){.keymini{margin-left:0;align-items:stretch;width:100%}.keymini input{flex:1;width:auto}}
+  /* AI Provider selector */
+  .provider-row{display:flex;gap:5px;justify-content:flex-end;flex-wrap:wrap}
+  .provider-btn{background:#f2f4f7;border:1.5px solid var(--line);border-radius:7px;padding:5px 11px;font-size:11px;font-weight:700;cursor:pointer;color:#555;transition:.15s;display:flex;align-items:center;gap:4px}
+  .provider-btn:hover{background:#e8ebef;border-color:#c5ccd6}
+  .provider-btn.active{color:#fff;border-color:transparent}
+  .provider-btn.active.claude{background:#c96442}
+  .provider-btn.active.gemini{background:#1a73e8}
+  .provider-btn.active.groq{background:#6b21a8}
+  body.dark .provider-btn{background:#2a3340;border-color:#3a4152;color:#c4cad6}
+  body.dark .provider-btn:hover{background:#333d4d}
+  @media(max-width:620px){.keymini{margin-left:0;align-items:stretch;width:100%}.keymini input{flex:1;width:auto}.provider-row{justify-content:flex-start}}
 
   .panel{background:#fff;padding:24px;border-radius:14px;box-shadow:0 4px 22px rgba(15,23,42,.07);border:1px solid var(--line);margin-bottom:20px}
   h2{color:var(--pw-red);font-size:1.22em;margin:0 0 4px;display:flex;align-items:center;gap:9px}
@@ -107,7 +152,8 @@
   body.dark .doc .listing-box{background:#2a2620;border-color:#5a4a28}
   body.dark .doc .listing-box p{color:#ede4d2}
   body.dark .doc .listing-box .tagline{background:#332c1d;color:#cdbb92;border-left-color:#7a6a3a}
-  body.dark .doc .rating-badge{background:#0c0e12}
+  body.dark .doc .rating-badge{background:#ffd54a;color:#1a1a1a;border-color:#c99800}
+  body.dark .doc .rating-badge b{color:#1a1a1a}
   body.dark .doc blockquote{background:#1d2a22;color:#cfe5d8}
   body.dark .doc blockquote strong{color:#7ee0a5}
   body.dark .doc .pitch-box{background:#262030;border-color:#4a3a5e}
@@ -123,7 +169,8 @@
   body.dark .ainote{background:#2c2614;border-color:#5e5223;color:#e7d9a8}
   body.dark .ainote b{color:#ffd56b}
   body.dark .mini{background:#2a3340;border-color:#3a4152;color:#c4cad6}
-  body.dark .reset-btn{background:#232834;border-color:#3a4152;color:#c4cad6}
+  body.dark .reset-btn{background:#e6b800;border-color:#ffd54a;color:#2a2000}
+  body.dark .reset-btn:hover{background:#ffd54a;color:#2a2000}
   body.dark .keymini .khint{color:#9aa3b2}
   body.dark .errbox{background:#3a1e1a;color:#ffb4a8;border-color:#8e1414}
   body.dark .doc h2{border-bottom-color:#33384a}
@@ -182,8 +229,24 @@
   .gen-btn.busy{cursor:wait}
   .btnrow{display:flex;gap:10px;margin-top:8px}
   .btnrow .gen-btn{flex:1;margin-top:0}
-  .reset-btn{flex-shrink:0;background:#fff;color:#555;border:1.5px solid var(--line);border-radius:9px;padding:0 16px;font-weight:700;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:7px;transition:.15s}
-  .reset-btn:hover{background:#f7f9fc;border-color:#cfd5dd;color:var(--pw-red)}
+  .research-opts{background:#f5f8fc;border:1px solid #dbe6f2;border-radius:9px;padding:11px 13px;margin:10px 0 12px;display:grid;grid-template-columns:1fr 1fr;gap:7px 14px}
+  .research-opts .ro-title{grid-column:1/-1;font-size:11px;font-weight:700;color:var(--pw-blue);margin-bottom:2px}
+  .research-opts .ro-chk{display:flex;align-items:center;gap:7px;font-size:12px;color:#444;cursor:pointer}
+  .research-opts .ro-chk input{width:auto;cursor:pointer}
+  body.dark .research-opts{background:#1c2230;border-color:#33415c}
+  body.dark .research-opts .ro-chk{color:#c4cad6}
+  .custom-feat{margin:0 0 12px}
+  .custom-feat label{display:block;font-size:11.5px;font-weight:600;color:#444;margin-bottom:4px}
+  .custom-feat input{width:100%;box-sizing:border-box;height:36px;border:1px solid var(--line);border-radius:8px;padding:0 11px;font-size:12.5px;background:#fff}
+  .custom-feat input:focus{outline:none;border-color:var(--pw-blue);box-shadow:0 0 0 3px rgba(13,71,161,.12)}
+  .custom-feat .cf-hint{font-size:10.5px;color:var(--muted);margin-top:4px}
+  body.dark .custom-feat label{color:#c4cad6}
+  body.dark .custom-feat input{background:#1c2230;border-color:#33415c;color:#e6e9ef}
+  .research-btn{width:100%;background:var(--pw-blue);color:#fff;border:none;border-radius:9px;padding:11px;font-size:14px;font-weight:800;cursor:pointer;transition:.15s;margin-bottom:12px}
+  .research-btn:hover{background:#0b3a85}
+  .research-btn:disabled{opacity:.6;cursor:not-allowed}
+  .reset-btn{flex-shrink:0;background:#ffd54a;color:#5a4500;border:2px solid #e0b020;border-radius:9px;padding:0 20px;font-weight:800;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:7px;transition:.15s;box-shadow:0 2px 6px rgba(224,176,32,.35)}
+  .reset-btn:hover{background:#ffc721;border-color:#c99800;color:#3d2f00;box-shadow:0 3px 10px rgba(224,176,32,.5)}
   .chk{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;color:#555;margin-top:11px;cursor:pointer;text-transform:none;letter-spacing:0}
   .chk input{width:auto}
   .chk b{color:var(--pw-blue)}
@@ -222,6 +285,10 @@
   /* preview */
   .preview-head{display:flex;align-items:center;gap:9px;margin-bottom:4px}
   .copy-tag{margin-left:auto;color:var(--pw-blue);cursor:pointer;font-size:12px;font-weight:700;background:#e3ecf9;padding:6px 12px;border-radius:7px;transition:.15s}
+  .char-counter{margin-left:auto;font-size:12px;font-weight:700;color:var(--muted);background:#eef1f5;padding:6px 12px;border-radius:7px}
+  .char-counter.over{color:#fff;background:var(--pw-red)}
+  body.dark .char-counter{background:#232834;color:#c4cad6}
+  body.dark .char-counter.over{background:var(--pw-red);color:#fff}
   .copy-tag:hover{background:#d4e2f6}
   .statusline{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;color:var(--muted);margin:10px 0 14px}
   .dot{width:9px;height:9px;border-radius:50%;background:var(--line)}
@@ -241,8 +308,30 @@
 
   .doc{padding:20px 22px}
   .doc h1{font-size:21px;font-weight:800;line-height:1.2;margin:0 0 8px}
-  .doc .rating-badge{display:inline-flex;align-items:center;gap:8px;background:var(--ink);color:#fff;padding:7px 14px;border-radius:20px;font-size:12.5px;font-weight:700;margin-bottom:6px}
-  .doc .rating-badge b{color:#f5c451;font-size:15px}
+  .doc .car-header{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+  .desc-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}
+  .doc li.mod-li{display:flex;align-items:flex-start;gap:8px;list-style:none}
+  .doc li.mod-li .mod-cb{margin-top:3px;cursor:pointer;flex-shrink:0;width:auto}
+  .doc li.mod-li .mod-rm{margin-left:auto;color:#c0392b;cursor:pointer;font-size:11px;opacity:.5;flex-shrink:0;padding:0 4px}
+  .doc li.mod-li .mod-rm:hover{opacity:1}
+  .doc li.mod-off{opacity:.45;text-decoration:line-through}
+  .doc li.mod-off .mod-rm{text-decoration:none}
+  .doc ul:has(.mod-li){padding-left:4px}
+  .mod-add{display:flex;gap:6px;margin:6px 0 4px;padding-left:4px}
+  .mod-add input{flex:1;height:30px;border:1px dashed var(--line);border-radius:6px;background:transparent;padding:0 9px;font-size:12px;color:inherit}
+  .mod-add input:focus{outline:none;border-color:var(--pw-blue);border-style:solid}
+  .mod-add button{background:var(--pw-blue);color:#fff;border:none;border-radius:6px;padding:0 14px;font-size:12px;font-weight:700;cursor:pointer}
+  .mod-add button:hover{background:#0b3a85}
+  .desc-actions-note{font-size:12px;color:var(--muted);font-weight:600;margin-right:auto}
+  .da-btn{border:none;border-radius:8px;padding:9px 16px;font-size:13px;font-weight:700;cursor:pointer;transition:.15s}
+  .da-copy{background:var(--pw-blue);color:#fff}
+  .da-copy:hover{background:#0b3a85}
+  .da-regen{background:#eef1f5;color:#444;border:1.5px solid var(--line)}
+  .da-regen:hover{background:#e3e7ec}
+  body.dark .da-regen{background:#232834;border-color:#3a4152;color:#c4cad6}
+  .doc .car-header h1{margin:0}
+  .doc .rating-badge{display:inline-flex;align-items:center;gap:6px;background:#ffd54a;color:#1a1a1a;padding:5px 13px;border-radius:20px;font-size:12px;font-weight:700;border:1.5px solid #e0b020}
+  .doc .rating-badge b{color:#1a1a1a;font-size:14px}
   .doc h2{font-size:12.5px;text-transform:uppercase;letter-spacing:.07em;font-weight:800;margin:22px 0 11px;padding-bottom:6px;border-bottom:2px solid #f0f0f0;display:flex;align-items:center;gap:8px;color:var(--pw-red)}
   .doc h2 .ph{display:none}
   .doc h2.good{color:var(--green)} .doc h2.good .ph{background:var(--green)}
@@ -270,6 +359,9 @@
   .doc .tagline{font-size:12px;color:var(--muted);font-style:italic;margin:-2px 0 10px}
   .errbox{background:var(--red-soft);border:1.5px solid var(--pw-red);color:var(--pw-red-dark);padding:15px;border-radius:10px;margin:20px;font-size:13.5px;line-height:1.5}
   .errbox b{display:block;margin-bottom:5px}
+  .switch-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+  .switch-retry{background:var(--pw-blue);color:#fff;border:none;border-radius:7px;padding:7px 12px;font-size:12px;font-weight:700;cursor:pointer;transition:.15s}
+  .switch-retry:hover{filter:brightness(1.08)}
 
   .protip{margin-top:16px;font-size:12px;color:#777;background:#f7f9fc;border:1px solid var(--line);padding:12px 14px;border-radius:9px;line-height:1.5}
   .protip strong{color:var(--ink)}
@@ -280,14 +372,20 @@
   .stage.work .stage-dot{background:#e0a800;animation:pulse 1s infinite}
   .stage.done{background:#e6f4ea;border-color:#4caf72;color:#1b7a44}
   .stage.done .stage-dot{background:#1b7a44}
+  .stage.miss{background:#fce8e6;border-color:#e0857a;color:#b7281a}
+  .stage.miss .stage-dot{background:#c0392b}
   body.dark .stage{background:#232834;border-color:#3a4152;color:#8b94a3}
   body.dark .stage .stage-dot{background:#4a5468}
   body.dark .stage.work{background:#322a14;border-color:#6b5a23;color:#ffd56b}
   body.dark .stage.work .stage-dot{background:#ffd56b}
   body.dark .stage.done{background:#16291d;border-color:#2f6f4e;color:#7ee0a5}
   body.dark .stage.done .stage-dot{background:#7ee0a5}
+  body.dark .stage.miss{background:#3a1e1a;border-color:#8e3a30;color:#ff9b8a}
+  body.dark .stage.miss .stage-dot{background:#ff7a6a}
   .rsub{font-size:12px;color:var(--muted);margin-bottom:14px;line-height:1.5}
   #research-out .doc{padding:6px 4px}
+  #research-out a{color:var(--pw-blue);word-break:break-all}
+  body.dark #research-out a{color:#7fb3ff}
   #research-out .placeholder{display:grid;place-items:center;text-align:center;color:var(--muted);padding:20px}
 
   .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--ink);color:#fff;padding:11px 22px;border-radius:24px;font-weight:700;font-size:13px;box-shadow:0 8px 24px rgba(0,0,0,.25);transition:transform .35s cubic-bezier(.2,1.2,.4,1);z-index:50}
@@ -308,11 +406,18 @@
       </div>
     </div>
     <div class="keymini" id="keymini">
+      <div class="provider-row">
+        <button class="provider-btn active claude" id="pb-claude" onclick="setProvider('claude')" type="button">🤖 Claude</button>
+        <button class="provider-btn gemini" id="pb-gemini" onclick="setProvider('gemini')" type="button">♊ Gemini</button>
+        <button class="provider-btn groq" id="pb-groq" onclick="setProvider('groq')" type="button">⚡ Groq</button>
+      </div>
+      <div class="provider-detail" id="providerDetail"></div>
       <div class="kline">
         <input type="text" id="apiKey" placeholder="Paste Anthropic API key (sk-ant-…)">
-        <button onclick="onRemember()" id="keySave" type="button" title="Remember on this device">Save</button>
+        <button onclick="saveKey()" id="keySave" type="button" title="Validate & connect this key">Save API Key</button>
       </div>
-      <div class="khint"><span class="kdot"></span><span id="keyMsg">Key required · </span>get one at <a href="https://console.anthropic.com/settings/keys" target="_blank">console.anthropic.com</a></div>
+      <div class="khint" id="keyHint" style="display:none"><span class="kdot"></span><span id="keyMsg">Key required · </span>get one at <a href="https://console.anthropic.com/settings/keys" target="_blank" id="keyLink">console.anthropic.com</a></div>
+      <div class="keydetect" id="keyDetect"></div>
     </div>
   </div>
 
@@ -361,19 +466,35 @@
           <div class="doccol-h">Ask from user / confirm from documentation</div>
           <div class="input-group">
             <label>Model Year</label>
-            <input type="date" id="d-model">
+            <div class="my-field">
+              <select class="my-mon" id="d-model-mon" onchange="syncMY('d-model')"></select>
+              <select class="my-yr" id="d-model-yr" onchange="syncMY('d-model')"></select>
+              <input type="hidden" id="d-model">
+            </div>
+          </div>
+          <div class="input-group">
+            <label>Import Year <span class="opt">(optional)</span></label>
+            <div class="my-field">
+              <select class="my-mon" id="d-import-mon" onchange="syncMY('d-import')"></select>
+              <select class="my-yr" id="d-import-yr" onchange="syncMY('d-import')"></select>
+              <input type="hidden" id="d-import">
+            </div>
           </div>
           <div class="input-group">
             <label>Registration Year</label>
-            <input type="date" id="d-reg">
-          </div>
-          <div class="input-group">
-            <label>Token Tax Paid Upto</label>
-            <input type="date" id="d-token">
+            <div class="my-field">
+              <select class="my-mon" id="d-reg-mon" onchange="syncMY('d-reg')"></select>
+              <select class="my-yr" id="d-reg-yr" onchange="syncMY('d-reg')"></select>
+              <input type="hidden" id="d-reg">
+            </div>
           </div>
           <div class="input-group" style="margin-bottom:0">
-            <label>Import Year <span class="opt">(optional)</span></label>
-            <input type="date" id="d-import">
+            <label>Token Tax Paid Upto</label>
+            <div class="my-field">
+              <select class="my-mon" id="d-token-mon" onchange="syncMY('d-token')"></select>
+              <select class="my-yr" id="d-token-yr" onchange="syncMY('d-token')"></select>
+              <input type="hidden" id="d-token">
+            </div>
           </div>
         </div>
         <!-- RIGHT: inspection / counts -->
@@ -381,19 +502,23 @@
           <div class="doccol-h">At time of inspection</div>
           <div class="input-group">
             <label>Documents Checked by Inspection Team</label>
-            <select id="d-docs"><option value="">— select —</option><option>Yes</option><option>No</option></select>
+            <select id="d-docs"><option value="">— select —</option><option>Yes</option><option>Not Available</option><option>Didn't Ask the Inspector</option><option>Provided by the Customer at the time of Ad Live</option></select>
           </div>
           <div class="input-group">
             <label>Number Plates</label>
-            <select id="d-plates"><option value="">— select —</option><option>Yes</option><option>No</option></select>
+            <select id="d-plates"><option value="">— select —</option><option>Yes – Original</option><option>Yes – Duplicate</option><option>Not Available</option></select>
           </div>
           <div class="input-group">
             <label>Number of Keys (Immobilizer / Smart)</label>
-            <input type="text" id="d-keys-immo" placeholder="e.g. 1">
+            <select id="d-keys-immo"><option value="">— select —</option><option>0</option><option>1</option><option>2</option><option>3</option></select>
+          </div>
+          <div class="input-group">
+            <label>Number of Keys (Manual)</label>
+            <select id="d-keys-manual"><option value="">— select —</option><option>0</option><option>1</option><option>2</option><option>3</option></select>
           </div>
           <div class="input-group" style="margin-bottom:0">
-            <label>Number of Keys (Manual)</label>
-            <input type="text" id="d-keys-manual" placeholder="e.g. 1">
+            <label>Number of Owners</label>
+            <select id="d-owners"><option value="">— select —</option><option>1st owner</option><option>2nd owner</option><option>3rd owner</option><option>4th owner</option><option>5th owner</option><option>6th owner</option><option>7th owner</option><option>8th owner</option><option>9th owner</option><option>10th owner</option><option>11th owner</option><option>12th owner</option><option>13th owner</option><option>14th owner</option><option>15th owner</option><option>16th owner</option><option>17th owner</option><option>18th owner</option><option>19th owner</option><option>20th owner</option></select>
           </div>
         </div>
       </div>
@@ -452,9 +577,8 @@
     <div class="input-group">
       <div class="ainote">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M12 2a7 7 0 0 0-4 12.7V17a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-2.3A7 7 0 0 0 12 2zM9 22h6"/></svg>
-        <span>Powered by AI (Claude). We use AI tools to draft this listing — <b>AI can make mistakes, please review the description before posting.</b></span>
+        <span>Powered by AI (<span id="aiProviderLabel">Claude</span>). We use AI tools to draft this listing — <b>AI can make mistakes, please review the description before posting.</b></span>
       </div>
-      <label class="chk"><input type="checkbox" id="doResearch"> Run <b>Research</b> window (missing features + best-ad examples)</label>
     </div>
 
     <div class="btnrow">
@@ -472,19 +596,53 @@
   <!-- SELLER PITCH (separate card, under the input column) -->
   <div class="panel" id="pitchPanel">
     <div class="preview-head">
-      <h2 style="margin:0;color:#7a3ea1">📞 Seller Pitch — Call &amp; Negotiation Aid</h2>
+      <h2 style="margin:0;color:#7a3ea1">📞 Seller Pitch — Call &amp; Negotiation (Insider Tips)</h2>
       <span class="copy-tag" onclick="copyPitch()" style="background:#f0e6f8;color:#7a3ea1">📋 Copy</span>
     </div>
     <div class="rsub">When you call the customer, these honest talking points (based on the inspection findings) help you justify and negotiate the price. They appear here after you generate.</div>
     <div id="pitch-out" class="doc"><div class="placeholder" style="height:120px"><p>Negotiation points will appear here after you Generate the description.</p></div></div>
   </div>
+
+  <!-- RESEARCH (now right after Seller Pitch in left column) -->
+  <div class="panel" id="researchPanel">
+    <div class="preview-head">
+      <h2 style="margin:0;color:var(--pw-blue)">🔎 Market Research</h2>
+    </div>
+    <div class="stage-row" id="researchStages">
+      <div class="stage" id="rs-idle"><span class="stage-dot"></span>Research Idle</div>
+      <div class="stage" id="rs-claude"><span class="stage-dot"></span>Analyzing Ad Trends</div>
+      <div class="stage" id="rs-compile"><span class="stage-dot"></span>Compiling Listing Insights</div>
+      <div class="stage" id="rs-ready"><span class="stage-dot"></span>Generating Ad Intelligence</div>
+    </div>
+    <div class="rsub">Vehicle data is already fetched from your links. Pick what you want to research below, then click <b>Search</b> — the AI runs only when you click Search (saves tokens).</div>
+    <div class="research-opts" id="researchOpts">
+      <div class="ro-title">Select research:</div>
+      <label class="ro-chk"><input type="checkbox" id="ro-missing" checked> Missing Features</label>
+      <label class="ro-chk"><input type="checkbox" id="ro-bestex" checked> Best Ad Examples</label>
+      <label class="ro-chk"><input type="checkbox" id="ro-highex"> High Price Ad Examples</label>
+      <label class="ro-chk"><input type="checkbox" id="ro-lowex"> Low Price Ad Examples</label>
+      <label class="ro-chk"><input type="checkbox" id="ro-price" checked> Price Estimation</label>
+      <label class="ro-chk"><input type="checkbox" id="ro-compare"> Market Comparison</label>
+      <label class="ro-chk"><input type="checkbox" id="ro-similar"> Similar Cars</label>
+      <label class="ro-chk"><input type="checkbox" id="ro-feature"> Feature Research</label>
+    </div>
+    <div class="custom-feat">
+      <label for="ro-custom">Other / Custom Feature <span class="opt">(optional)</span></label>
+      <input type="text" id="ro-custom" placeholder="e.g. Sunroof, Back Seat Entertainment, Paddle Shifters">
+      <div class="cf-hint">A 🔗 "See photos" link for the typed feature appears with the results.</div>
+    </div>
+    <button class="research-btn" id="researchBtn" onclick="runResearch()" type="button">🔎 Search</button>
+    <div id="research-out"><div class="placeholder" style="height:140px"><p>Pick your research options above, then click <b>Search</b> to run.</p></div></div>
+  </div>
   </div><!-- /left-col -->
 
-  <!-- PREVIEW (right column) -->
+  <!-- RIGHT COLUMN: ad description + research -->
+  <div class="right-col">
+  <!-- PREVIEW -->
   <div class="panel" id="previewPanel">
     <div class="preview-head">
       <h2 style="margin:0">SIFM Ad Description</h2>
-      <span class="copy-tag" onclick="copyDesc()">📋 Copy</span>
+      <span class="char-counter" id="charCounter">Final Listing: — / 995 chars</span>
     </div>
     <div class="protip" style="margin-top:0;margin-bottom:14px">
       <strong>Honest selling tip:</strong> Mentioning small faults along with the car's strong points builds buyer trust — and trust helps close the deal. This tool never adds fake features or hides real faults.
@@ -493,6 +651,8 @@
       <div class="stage" id="st-wait"><span class="stage-dot"></span>Waiting for Report</div>
       <div class="stage" id="st-fetch"><span class="stage-dot"></span>Fetching</div>
       <div class="stage" id="st-ad"><span class="stage-dot"></span>Reading PW Ad</div>
+      <div class="stage" id="st-auction"><span class="stage-dot"></span>Reading Auction Sheet</div>
+      <div class="stage" id="st-docs"><span class="stage-dot"></span>Documentation</div>
       <div class="stage" id="st-analyze"><span class="stage-dot"></span>Analyzing Report</div>
       <div class="stage" id="st-create"><span class="stage-dot"></span>Creating</div>
       <div class="stage" id="st-done"><span class="stage-dot"></span>Listing Ready</div>
@@ -507,20 +667,16 @@
         <p>Paste the Inspection Report link (and key, top-right), then <strong>Generate</strong>. You'll get the full buyer-ready breakdown plus the car's features and documentation.</p>
       </div>
     </div>
-
-    <!-- RESEARCH WINDOW (under preview, only when enabled) -->
-    <div id="researchPanel" style="display:none;margin-top:18px;border-top:2px solid var(--line);padding-top:18px">
-      <div class="preview-head">
-        <h2 style="margin:0;color:var(--pw-blue);font-size:1.05em"><span class="ic" style="background:var(--pw-blue)">3</span> Research <span style="font-size:11px;font-weight:600;color:var(--muted)">(separate — not part of the ad)</span></h2>
-        <span class="copy-tag" onclick="copyResearch()">📋 Copy</span>
-      </div>
-      <div class="statusline" style="margin-bottom:10px">
-        <span class="dot" id="rdot"></span><span id="rStatus">Research idle</span>
-      </div>
-      <div class="rsub">Helps spot features this car may be missing vs. its trim, and shows how strong ads for the same model are written on classified platforms. Reference only — not added to the listing automatically.</div>
-      <div id="research-out"><div class="placeholder" style="height:160px"><p>Tick "Run Research" before generating to populate this window.</p></div></div>
+    <div class="desc-actions" id="descActions" style="display:none">
+      <span class="desc-actions-note">Review the listing above, then:</span>
+      <button class="da-btn da-copy" onclick="copyDesc()" type="button">📋 Copy Final Listing</button>
+      <button class="da-btn da-regen" onclick="copyBreakdown()" type="button">📋 Copy Breakdown (checked)</button>
+      <button class="da-btn da-regen" onclick="runAll()" type="button">🔄 Regenerate</button>
     </div>
   </div>
+
+  <!-- RESEARCH moved to left column under Seller Pitch -->
+  </div><!-- /right-col -->
   </div><!-- /wrapper -->
 
 </div>
@@ -534,34 +690,271 @@ let lastPlainText='', lastResearch='', lastAdText='', lastPitch='';
 
 function setStatus(s,t){ dot.className='dot'+(s?' '+s:''); statusText.textContent=t; }
 // stage boxes: state = 'idle' | 'work' | 'done'
-function setStage(id, state){ const el=$('st-'+id); if(!el) return; el.classList.remove('work','done'); if(state==='work') el.classList.add('work'); else if(state==='done') el.classList.add('done'); }
-function resetStages(){ ['wait','fetch','ad','analyze','create','done'].forEach(id=>setStage(id,'idle')); setStage('wait','work'); }
+function setStage(id, state){ const el=$('st-'+id); if(!el) return; el.classList.remove('work','done','miss'); if(state==='work') el.classList.add('work'); else if(state==='done') el.classList.add('done'); else if(state==='miss') el.classList.add('miss'); }
+function resetStages(){ ['wait','fetch','ad','auction','docs','analyze','create','done'].forEach(id=>setStage(id,'idle')); setStage('wait','work'); }
 function toast(m){ const t=$('toast'); t.textContent=m; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),1600); }
 
-/* API key */
+/* API key & provider */
 const KEY_STORE='sifm_anthropic_key';
-function refreshKeyState(){
-  const k=$('apiKey').value.trim(), mini=$('keymini'), msg=$('keyMsg');
-  if(k && k.startsWith('sk-')){ mini.classList.add('ok'); msg.textContent='Key set · '; }
-  else { mini.classList.remove('ok'); msg.textContent='Key required · '; }
+const PROVIDER_STORE='sifm_ai_provider';
+
+const PROVIDERS = {
+  claude: {
+    label:'Claude',
+    placeholder:'Paste Anthropic API key (sk-ant-…)',
+    hint:'get one at ',
+    linkText:'console.anthropic.com',
+    linkUrl:'https://console.anthropic.com/settings/keys',
+    keyPrefix:'sk-ant-',
+    detail:'<b>🤖 Claude</b> — best writing quality. Paste a key starting <code>sk-ant-</code> · get one at <a href="https://console.anthropic.com/settings/keys" target="_blank">console.anthropic.com</a> <span class="muted">(needs a small credit)</span>',
+    detailClass:'pd-claude',
+  },
+  gemini: {
+    label:'Gemini',
+    placeholder:'Paste Google Gemini API key (AIza…)',
+    hint:'get one at ',
+    linkText:'aistudio.google.com',
+    linkUrl:'https://aistudio.google.com/app/apikey',
+    keyPrefix:'AIza',
+    detail:'<b>♊ Gemini</b> — free to start. Paste a key starting <code>AIza</code> · get one at <a href="https://aistudio.google.com/app/apikey" target="_blank">aistudio.google.com</a> <span class="muted">(free tier has limits)</span>',
+    detailClass:'pd-gemini',
+  },
+  groq: {
+    label:'Groq',
+    placeholder:'Paste Groq API key (gsk_…)',
+    hint:'get one at ',
+    linkText:'console.groq.com',
+    linkUrl:'https://console.groq.com/keys',
+    keyPrefix:'gsk_',
+    detail:'<b>⚡ Groq</b> — free &amp; very fast. Paste a key starting <code>gsk_</code> · get one at <a href="https://console.groq.com/keys" target="_blank">console.groq.com</a> <span class="muted">(open models)</span>',
+    detailClass:'pd-groq',
+  },
+};
+
+let currentProvider = 'claude';
+let connectedKey = '';      // validated+connected key
+let connectedProvider = ''; // provider it was connected for
+
+function setProvider(p){
+  currentProvider = p;
+  try{ localStorage.setItem(PROVIDER_STORE, p); }catch(e){}
+  const cfg = PROVIDERS[p];
+  $('apiKey').placeholder = cfg.placeholder;
+  $('apiKey').value = '';
+  $('keyLink').href = cfg.linkUrl;
+  $('keyLink').textContent = cfg.linkText;
+  $('aiProviderLabel').textContent = cfg.label;
+  // Update button active states
+  ['claude','gemini','groq'].forEach(id=>{
+    const btn = $('pb-'+id);
+    btn.classList.toggle('active', id===p);
+    // Keep color classes
+    btn.classList.remove('claude','gemini','groq');
+    btn.classList.add(id);
+  });
+  refreshKeyState();
+  // Load saved key for this provider; mark connected if present
+  try{
+    const saved = localStorage.getItem(KEY_STORE+'_'+p);
+    if(saved){ $('apiKey').value=saved; connectedKey=saved; connectedProvider=p; }
+    else { connectedKey=''; connectedProvider=''; }
+  }catch(e){}
+  showError('');
+  refreshKeyState();
+  updateProviderDetail();
 }
-function onRemember(){ const k=$('apiKey').value.trim(); if(!k){toast('Enter a key first');return;} try{localStorage.setItem(KEY_STORE,k);toast('Key saved on this device');}catch(e){toast('Could not save');} }
-(function(){ try{ const k=localStorage.getItem(KEY_STORE); if(k) $('apiKey').value=k; }catch(e){} })();
-$('apiKey').addEventListener('input',refreshKeyState);
+
+// update the detail box under the buttons to match the active provider
+function updateProviderDetail(){
+  const box=$('providerDetail'); if(!box) return;
+  const cfg=PROVIDERS[currentProvider];
+  box.innerHTML = cfg.detail || '';
+  box.className = 'provider-detail '+(cfg.detailClass||'');
+  refreshKeyState(); // re-apply show/hide based on whether a key is set
+}
+
+// ---- Centralized connection state (the Save button is the single source of truth) ----
+// short, user-friendly message under the field
+function showError(msg, kind){
+  const det=$('keyDetect'); if(!det) return;
+  det.textContent = msg || '';
+  det.className = 'keydetect' + (kind==='ok'?' ok':kind==='warn'?' warn':msg?' err':'');
+}
+
+// the ONE function that drives the Save button's look + text
+function setButtonState(state){
+  const b=$('keySave'); if(!b) return;
+  b.classList.remove('s-connecting','s-connected','s-error');
+  b.disabled = (state==='connecting');
+  if(state==='connecting'){ b.classList.add('s-connecting'); b.innerHTML='<span class="mini-spin"></span>Connecting…'; }
+  else if(state==='connected'){ b.classList.add('s-connected'); b.textContent='✓ Connected'; }
+  else if(state==='error'){ b.classList.add('s-error'); b.textContent=b.dataset.errLabel||'Connection Failed'; }
+  else { b.textContent='Save API Key'; } // default
+}
+
+// light state recompute as the user types (no API call here)
+function refreshKeyState(){
+  const k=$('apiKey').value.trim(), cfg=PROVIDERS[currentProvider];
+  const isConnected = connectedKey && k===connectedKey && connectedProvider===currentProvider;
+  if(isConnected){
+    setButtonState('connected');
+    if($('keyHint')) $('keyHint').style.display='none';
+    if($('providerDetail')) $('providerDetail').style.display='none';
+  } else {
+    setButtonState('default');
+    if($('keyHint')) $('keyHint').style.display='none';
+    if($('providerDetail')) $('providerDetail').style.display = k?'none':'';
+  }
+}
+
+// Switch provider but KEEP the key currently in the box (used by auto-detect)
+function switchProviderKeepKey(p){
+  const keep = $('apiKey').value;
+  currentProvider = p;
+  try{ localStorage.setItem(PROVIDER_STORE, p); }catch(e){}
+  const cfg = PROVIDERS[p];
+  $('apiKey').placeholder = cfg.placeholder;
+  $('keyLink').href = cfg.linkUrl;
+  $('keyLink').textContent = cfg.linkText;
+  $('aiProviderLabel').textContent = cfg.label;
+  ['claude','gemini','groq'].forEach(id=>{
+    const btn = $('pb-'+id);
+    btn.classList.toggle('active', id===p);
+    btn.classList.remove('claude','gemini','groq'); btn.classList.add(id);
+  });
+  $('apiKey').value = keep;
+  refreshKeyState();
+  updateProviderDetail();
+}
+
+// Detect provider by prefix as the user types/pastes; auto-select it
+function detectProvider(){
+  const k=$('apiKey').value.trim();
+  if(!k){ showError(''); refreshKeyState(); return; }
+  let matched=null;
+  for(const id of ['claude','gemini','groq']){ if(k.startsWith(PROVIDERS[id].keyPrefix)){ matched=id; break; } }
+  if(matched){
+    if(matched!==currentProvider) switchProviderKeepKey(matched);
+    showError(''); // no nudge — the highlighted provider + Save button are enough
+  } else {
+    showError('Key format not recognized — pick a provider above','warn');
+  }
+  refreshKeyState();
+}
+
+// Lightweight validation: 1-token test call. Returns {ok} or {ok:false, label, msg}
+async function validateKey(key){
+  try{
+    await callAI(key, 'ping', 1); // tiny call; success means key+credit work
+    return {ok:true};
+  }catch(err){
+    const m=(err.message||String(err));
+    if(/Failed to fetch|NetworkError|Load failed/i.test(m)) return {ok:false, label:'Network Error', msg:'Network error — check your connection'};
+    if(/\b401\b|invalid|unauthor|api[_ ]?key/i.test(m)) return {ok:false, label:'Invalid Key', msg:'Invalid API key'};
+    if(/credit|balance|quota|billing|\b402\b|payment/i.test(m)) return {ok:false, label:'Low Balance', msg:'Low balance — add credit to your account'};
+    if(/\b429\b|rate.?limit/i.test(m)) return {ok:false, label:'Rate Limit', msg:'Rate limit reached — try again shortly'};
+    if(/\b404\b|model/i.test(m)) return {ok:false, label:'API Error', msg:'API/model error — try another provider'};
+    return {ok:false, label:'Connection Failed', msg:'Could not connect — please try again'};
+  }
+}
+
+// Save = validate + connect + persist
+async function saveKey(){
+  const k=$('apiKey').value.trim();
+  if(!k){ showError('Enter or paste an API key first','warn'); $('apiKey').focus(); return; }
+  showError('');
+  setButtonState('connecting');
+  const res=await validateKey(k);
+  if(res.ok){
+    connectedKey=k; connectedProvider=currentProvider;
+    try{ localStorage.setItem(KEY_STORE+'_'+currentProvider,k); localStorage.setItem(PROVIDER_STORE,currentProvider); }catch(e){}
+    showError('');
+    setButtonState('connected');
+    toast(PROVIDERS[currentProvider].label+' connected');
+    if($('providerDetail')) $('providerDetail').style.display='none';
+  } else {
+    $('keySave').dataset.errLabel=res.label;
+    setButtonState('error');
+    showError(res.msg);
+  }
+}
+
+// Restore a saved key on load (does not re-validate to avoid cost; shows Connected optimistically)
+function restoreKey(){
+  try{
+    const k = localStorage.getItem(KEY_STORE+'_'+currentProvider);
+    if(k){ $('apiKey').value=k; connectedKey=k; connectedProvider=currentProvider; }
+    else {
+      const legacy = localStorage.getItem(KEY_STORE);
+      if(legacy && currentProvider==='claude'){ $('apiKey').value=legacy; connectedKey=legacy; connectedProvider='claude'; }
+    }
+  }catch(e){}
+  refreshKeyState();
+}
+
+/* Restore saved provider & key on load */
+(function(){
+  try{
+    const savedProvider = localStorage.getItem(PROVIDER_STORE);
+    if(savedProvider && PROVIDERS[savedProvider]) setProvider(savedProvider);
+    else setProvider('claude');
+  }catch(e){ setProvider('claude'); }
+  restoreKey();
+})();
+$('apiKey').addEventListener('input',detectProvider);
+$('apiKey').addEventListener('paste',()=>setTimeout(detectProvider,10));
+$('apiKey').addEventListener('change',detectProvider);
+detectProvider();
 refreshKeyState();
+updateProviderDetail();
 setStage('wait','work');
+resetRStages();
 
 function toggleAcc(){ $('accAdv').classList.toggle('open'); }
+
+// Month + Year dropdown logic
+const MY_MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+function populateMY(){
+  const ids=['d-model','d-reg','d-token','d-import'];
+  const nowYr=new Date().getFullYear();
+  ids.forEach(id=>{
+    const mon=$(id+'-mon'), yr=$(id+'-yr');
+    if(mon && !mon.options.length){
+      let h='<option value="">Month</option>';
+      MY_MONTHS.forEach((m,i)=>{ h+=`<option value="${String(i+1).padStart(2,'0')}">${m}</option>`; });
+      mon.innerHTML=h;
+    }
+    if(yr && !yr.options.length){
+      let h='<option value="">Year</option>';
+      for(let y=nowYr;y>=1990;y--){ h+=`<option value="${y}">${y}</option>`; }
+      yr.innerHTML=h;
+    }
+  });
+}
+// combine the two dropdowns into the hidden field as YYYY-MM (or blank)
+function syncMY(id){
+  const m=$(id+'-mon').value, y=$(id+'-yr').value;
+  $(id).value = (m && y) ? `${y}-${m}` : '';
+  refreshDocStage();
+}
+// convert stored YYYY-MM to YYYY-MM (already correct) — kept for compatibility
+function toYM(v){
+  v=(v||'').trim();
+  let m=/^(\d{2})\/(\d{4})$/.exec(v); if(m) return m[2]+'-'+m[1];
+  m=/^(\d{4})-(\d{2})$/.exec(v); if(m) return v;
+  return v;
+}
+function refreshDocStage(){ /* placeholder: documentation stage is recomputed on Generate */ }
 function toggleTheme(){ const d=document.body.classList.toggle('dark'); $('themeIcon').textContent=d?'☀️':'🌙'; $('themeLabel').textContent=d?'Light Mode':'Dark Mode'; }
 
 
 function resetForm(){
   if(!confirm('Reset the whole form? This clears all links, report text and documentation fields.')) return;
   ['ad-link','link-ad','link-auction','v-report','v-maint','v-mods',
-   'd-model','d-reg','d-token','d-import','d-keys-immo','d-keys-manual','d-extra'].forEach(id=>{ if($(id)) $(id).value=''; });
-  ['d-docs','d-plates'].forEach(id=>{ if($(id)) $(id).selectedIndex=0; });
+   'd-model','d-reg','d-token','d-import','d-extra'].forEach(id=>{ if($(id)) $(id).value=''; });
+  ['d-docs','d-plates','d-keys-immo','d-keys-manual','d-owners',
+   'd-model-mon','d-model-yr','d-reg-mon','d-reg-yr','d-token-mon','d-token-yr','d-import-mon','d-import-yr'].forEach(id=>{ if($(id)) $(id).selectedIndex=0; });
   $('wordcap').value='995';
-  $('doResearch').checked=false;
   $('accAdv').classList.remove('open');
   if($('pdfInput')) $('pdfInput').value='';
   if($('pdfStatus')){ $('pdfStatus').textContent=''; $('pdfStatus').className='pdfstatus'; }
@@ -592,7 +985,11 @@ Exterior: front windshield crack; all head/taillights working but lenses cracked
 Body frame: all pillars/rails/sub-frames OK; radiator core support needs repair.
 Tyres: Bridgestone, front 5.0mm rear 5.4mm, 195/65/R15, alloy rims.
 Test drive: smooth auto shifting, ABS timely, steering centered, AC perfect.`;
-function loadSample(){ $('v-report').value=SAMPLE; $('ad-link').value='https://www.pakwheels.com/carsure-reports/e198e4745b6359784f39b330730f08cb'; $('d-docs').value='Yes'; $('d-plates').value='Yes'; $('d-reg').value='2016-03-15'; $('d-model').value='2015-01-01'; $('d-token').value='2025-12-31'; $('d-keys-immo').value='1'; $('d-keys-manual').value='1'; $('d-extra').value='7D floor mats, HID headlights, ceramic coating'; toast('Sample loaded'); }
+function loadSample(){ $('v-report').value=SAMPLE; $('ad-link').value='https://www.pakwheels.com/carsure-reports/e198e4745b6359784f39b330730f08cb'; $('d-docs').value='Yes'; $('d-plates').value='Yes – Original';
+  setMY('d-model','2015','01'); setMY('d-reg','2016','03'); setMY('d-token','2025','12');
+  $('d-keys-immo').value='1'; $('d-keys-manual').value='1'; $('d-extra').value='7D floor mats, HID headlights, ceramic coating'; toast('Sample loaded'); }
+// helper to set a month+year field from sample/data
+function setMY(id, y, m){ if($(id+'-yr')) $(id+'-yr').value=y; if($(id+'-mon')) $(id+'-mon').value=m; if($(id)) $(id).value=y+'-'+m; }
 
 // ---- PDF text extraction (offline, via PDF.js loaded on demand) ----
 let pdfjsReady=false;
@@ -683,15 +1080,16 @@ async function runAll(){
   resetStages();
   setStage('wait','done');
 
-  // ----- FETCH (only if we don't already have report text and a link exists) -----
+  const adUrl=$('link-ad').value.trim();
+  const auctionUrl=$('link-auction').value.trim();
+
+  // ----- FETCH inspection report (only if we don't already have report text and a link exists) -----
   if(!report && link){
-    const adUrl=$('link-ad').value.trim();
-    const twoPhase=!!adUrl;
     setStage('fetch','work');
     setStatus('work','Fetching inspection report…');
     setGenProgress(8, 'Fetching… 8%');
     const reportText = await fetchViaProxies(link, (i,n)=>{
-      const pct=8+Math.round((i/n)*(twoPhase?28:42));
+      const pct=8+Math.round((i/n)*28);
       setGenProgress(pct, 'Fetching report… '+pct+'%');
     });
     if(!reportText){
@@ -704,36 +1102,34 @@ async function runAll(){
     }
     $('v-report').value=reportText; report=reportText;
     setStage('fetch','done');
-
-    // ----- READING PW AD (only if ad link provided) -----
-    if(twoPhase){
-      setStage('ad','work');
-      setStatus('work','Reading PW ad…');
-      setGenProgress(48, 'Reading ad… 48%');
-      const adText=await fetchViaProxies(adUrl, (i,n)=>{
-        const pct=48+Math.round((i/n)*16);
-        setGenProgress(pct, 'Reading ad… '+pct+'%');
-      });
-      window.__adText = adText ? adText.slice(0,4000) : '';
-      setStage('ad','done');
-    } else { window.__adText=''; }
-
-    // ----- READING AUCTION SHEET (only if auction link provided) -----
-    const auctionUrl=$('link-auction').value.trim();
-    if(auctionUrl){
-      setStatus('work','Reading auction sheet…');
-      setGenProgress(66, 'Reading auction sheet… 66%');
-      const auctionText=await fetchViaProxies(auctionUrl, (i,n)=>{
-        const pct=66+Math.round((i/n)*6);
-        setGenProgress(pct, 'Reading auction sheet… '+pct+'%');
-      });
-      window.__auctionText = auctionText ? auctionText.slice(0,3000) : '';
-    } else { window.__auctionText=''; }
   } else {
-    setStage('fetch','done');
-    if($('link-ad').value.trim()) setStage('ad','done');
-    window.__auctionText = window.__auctionText || '';
+    setStage('fetch','done'); // report already provided/pasted
   }
+
+  // ----- READING PW AD: green if read, RED if missing/unreadable -----
+  if(adUrl){
+    setStage('ad','work');
+    setStatus('work','Reading PW ad…');
+    setGenProgress(50, 'Reading ad… 50%');
+    const adText=await fetchViaProxies(adUrl, (i,n)=>{ setGenProgress(50+Math.round((i/n)*12), 'Reading ad…'); });
+    if(adText){ window.__adText=adText.slice(0,4000); setStage('ad','done'); }
+    else { window.__adText=''; setStage('ad','miss'); } // provided but couldn't read
+  } else { window.__adText=''; setStage('ad','miss'); } // not provided
+
+  // ----- READING AUCTION SHEET: green if read, RED if missing/unreadable -----
+  if(auctionUrl){
+    setStage('auction','work');
+    setStatus('work','Reading auction sheet…');
+    setGenProgress(64, 'Reading auction sheet… 64%');
+    const auctionText=await fetchViaProxies(auctionUrl, (i,n)=>{ setGenProgress(64+Math.round((i/n)*8), 'Reading auction sheet…'); });
+    if(auctionText){ window.__auctionText=auctionText.slice(0,3000); setStage('auction','done'); }
+    else { window.__auctionText=''; setStage('auction','miss'); }
+  } else { window.__auctionText=''; setStage('auction','miss'); }
+
+  // ----- DOCUMENTATION: green if key fields filled, RED if missing -----
+  const docVals=['d-model','d-reg','d-token','d-docs','d-plates','d-keys-immo','d-keys-manual'].map(id=>($(id)?$(id).value.trim():''));
+  const docsFilled=docVals.filter(v=>v).length;
+  setStage('docs', docsFilled>=2 ? 'done' : 'miss');
 
   // ----- ANALYZING REPORT -----
   setStage('analyze','work');
@@ -754,6 +1150,49 @@ async function runAll(){
   setTimeout(resetGenBtn, 900);
 }
 function flagLink(){ const i=$('ad-link'); i.classList.add('invalid'); setTimeout(()=>i.classList.remove('invalid'),2000); }
+
+/* ---- Provider-aware AI call helper ---- */
+function extractText(data){
+  // Claude: data.content[].text
+  if(data.content) return data.content.filter(b=>b.type==='text').map(b=>b.text).join('\n');
+  // Gemini: data.candidates[0].content.parts[0].text
+  if(data.candidates) return (data.candidates[0]?.content?.parts||[]).map(p=>p.text||'').join('\n');
+  // Groq: data.choices[0].message.content
+  if(data.choices) return data.choices[0]?.message?.content||'';
+  return '';
+}
+
+async function callAI(key, userPrompt, maxTokens){
+  const p = currentProvider;
+  let url, headers, body;
+
+  if(p==='claude'){
+    url='https://api.anthropic.com/v1/messages';
+    headers={'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'};
+    body=JSON.stringify({model:'claude-sonnet-4-6',max_tokens:maxTokens,messages:[{role:'user',content:userPrompt}]});
+  } else if(p==='gemini'){
+    url=`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${encodeURIComponent(key)}`;
+    headers={'Content-Type':'application/json'};
+    body=JSON.stringify({contents:[{parts:[{text:userPrompt}]}],generationConfig:{maxOutputTokens:maxTokens}});
+  } else if(p==='groq'){
+    url='https://api.groq.com/openai/v1/chat/completions';
+    headers={'Content-Type':'application/json','Authorization':'Bearer '+key};
+    body=JSON.stringify({model:'llama-3.3-70b-versatile',max_tokens:maxTokens,messages:[{role:'user',content:userPrompt}]});
+  }
+
+  const res = await fetch(url,{method:'POST',headers,body});
+
+  // Error handling with provider-specific messaging + suggestion to switch
+  const others = ['claude','gemini','groq'].filter(x=>x!==p).map(x=>PROVIDERS[x].label).join(' or ');
+  if(res.status===401||res.status===403) throw new Error(`Invalid or unauthorized API key (${res.status}) for ${PROVIDERS[p].label}. Check your key at ${PROVIDERS[p].linkText}, or switch to ${others} using the buttons at the top-right.`);
+  if(res.status===429) throw new Error(`${PROVIDERS[p].label} is rate-limited or out of quota (429). Wait a minute and retry, top up your ${PROVIDERS[p].label} account, or switch to ${others} at the top-right and Generate again.`);
+  if(!res.ok){
+    let m='';
+    try{ const j=await res.json(); m=j.error?.message||j.error?.status||''; if(m) m=' — '+m; }catch(e){}
+    throw new Error(`${PROVIDERS[p].label} API responded ${res.status}${m}. You can also try ${others} at the top-right.`);
+  }
+  return res.json();
+}
 
 function buildPrompt(){
   const report=$('v-report').value.trim();
@@ -778,11 +1217,13 @@ function buildPrompt(){
   const fmtMonth=v=>{ const m=/^(\d{4})-(\d{2})$/.exec(v); return m? `${MON[+m[2]-1]} ${m[1]}` : v; };
   const fmtDate=v=>{ const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(v); return m? `${+m[3]} ${MON[+m[2]-1]} ${m[1]}` : v; };
   const docs=$('d-docs').value, plates=$('d-plates').value;
-  const reg=fmtDate($('d-reg').value.trim()), model=fmtDate($('d-model').value.trim()), impYr=fmtDate($('d-import').value.trim());
-  const token=fmtDate($('d-token').value.trim()), kImmo=$('d-keys-immo').value.trim(), kMan=$('d-keys-manual').value.trim();
+  const reg=fmtMonth(toYM($('d-reg').value.trim())), model=fmtMonth(toYM($('d-model').value.trim())), impYr=fmtMonth(toYM($('d-import').value.trim()));
+  const token=fmtMonth(toYM($('d-token').value.trim())), kImmo=$('d-keys-immo').value.trim(), kMan=$('d-keys-manual').value.trim();
+  const owners=$('d-owners')?$('d-owners').value.trim():'';
   let docFields=[];
-  if(docs) docFields.push(`Documents checked by inspection team: ${docs}`);
-  if(plates) docFields.push(`Number plates available: ${plates}`);
+  if(docs) docFields.push(`Documents: ${docs}`);
+  if(plates) docFields.push(`Number plates: ${plates}`);
+  if(owners) docFields.push(`Number of owners: ${owners}`);
   if(reg) docFields.push(`Registration year: ${reg}`);
   if(model) docFields.push(`Model year: ${model}`);
   if(impYr) docFields.push(`Import year: ${impYr}`);
@@ -795,28 +1236,33 @@ function buildPrompt(){
 
   return `You are an automotive evaluation and sales assistant for used cars on PakWheels. Analyze the report and produce a buyer-friendly listing in THREE clear phases.
 
-Return clean HTML using ONLY: <h1>, <h2 class="good|attn|feat|pitch"> (plain text heading, NO span/badge/number inside), <h3>, <p>, <ul>, <li>, <strong>, <blockquote>, <hr>, <div class="rating-badge">, <div class="listing-box">, <div class="pitch-box">, <p class="tagline">, and cost spans. No markdown, no code fences, no <html>/<head>/<body>. Do NOT put "PHASE", numbers, or any badge span inside headings — headings are plain text only.
+Return clean HTML using ONLY: <h1>, <div class="car-header">, <h2 class="good|attn|feat|pitch"> (plain text heading, NO span/badge/number inside), <h3>, <p>, <ul>, <li>, <strong>, <blockquote>, <hr>, <div class="rating-badge">, <div class="listing-box">, <div class="pitch-box">, <p class="tagline">, and cost spans. No markdown, no code fences, no <html>/<head>/<body>. Do NOT put "PHASE", numbers, or any badge span inside headings — headings are plain text only.
 
 STRUCTURE (exact order):
-1. <h1> car name + year. If a rating exists, follow with <div class="rating-badge">Overall Inspection Rating <b>X/10</b></div>. (Note: the car name and rating are reference only — they are NOT part of the copyable description.)
+1. <div class="car-header"><h1>car name + year</h1> followed (if a rating exists) by <div class="rating-badge">Inspection <b>X/10</b></div></div> — both on the SAME row. (Reference only — not part of the copyable description.)
 
-2. <h2 class="good">Why You Should Buy This Car</h2> + a short, honest, attractive <p> (1-2 sentences, simple language) that genuinely draws the buyer in based on the inspection report's strengths. No hype, no false claims.
+2. <hr> then <h2 class="good">Why You Should Buy This Car</h2> + a <ul> of SHORT point-wise inspection highlights (NOT paragraphs). Each <li> is one short line, prefixed with "✔ ", drawn from the report's strengths — e.g. "✔ Engine &amp; Gearbox: 100%", "✔ AC Performance: 100%", "✔ Brakes &amp; Suspension: 100%", "✔ Structurally clear body (accident-free)", "✔ PakWheels inspected car". 4-6 lines max. No storytelling, no emotional sales writing. Buyer should grasp condition in 5-10 seconds.
 
-3. <h2 class="attn">Things That Need Attention</h2> + a simple <p> in plain language reminding the buyer this is a used car (not new) — set honest expectations while staying positive. Then:
-   <h3>Required Repairs (fixable)</h3> — <ul> of repairable items, each ending with a cost span EXACTLY <span class="cost low">Minor Cost</span> / <span class="cost mod">Moderate Cost</span> / <span class="cost high">High Cost</span>.
-   <h3>Cannot Be Repaired — Note &amp; Live With</h3> — <ul> of permanent items (structural/accident-frame findings, chassis impact, high mileage, non-original panels) with honest, brief notes. If none, a single <li> stating nothing permanent was flagged.
+3. <h2 class="attn">Things That Need Attention</h2> + ONE short italic framing line as a <p>: "Listed openly so there's no confusion — this is a used car, kept honest:". Then a <ul> of SHORT wear/repair points, ONE short line each, prefixed "✔ ". Use plain, calm wording — NEVER fear-based or over-detailed. GOOD: "✔ Rear door dent", "✔ Minor body scratches", "✔ Roof paint faded", "✔ Tyres aging but usable". BAD: "Large dent with extensive scratches and body damage". You MAY add a tiny cost tag where useful: <span class="cost low">Minor</span> / <span class="cost mod">Moderate</span>. Do NOT over-dramatize normal cosmetic wear. Keep it tight.
 
-4. <h2 class="feat">Main Features</h2> + <ul> of the car's key features. RULE: if a PW Ad link was provided, do NOT repeat features already shown in that public ad — only list features the ad is MISSING but the report/fields support (to add value). If no ad link, list the key supported features (engine &amp; transmission, drive system, sunroof/comfort, electric seats &amp; windows, alloy rims &amp; tyres, camera/multimedia, AC/heater, keyless/push start, climate/cruise, LED/HID, sensors, ABS, airbags, etc.). Include seller-provided extras and the "Extra details to mention" naturally. NEVER invent a feature.
+4. <h2 class="feat">Main Features</h2> + <ul> of ONLY meaningful, buyer-visible features (short, one per line). Examples worth listing: Rear Camera, ABS, Power Windows, Central Locking, Cruise Control, Push Start, Android Panel, Sunroof, Parking Sensors, Radar, HID, Alloy Rims, Climate Control, Airbags, 7D Mats, plus seller extras. DO NOT list basic/obvious confirmations like "Audio/video system working". Where a feature is inspection-verified, note "(based on inspection)" — use "based on inspection", NOT "confirmed by inspection". If a PW Ad link was provided, only add features the ad is MISSING. NEVER invent a feature — only list what the report/fields support.
 
-5. <h2 class="feat">PakWheels Inspected Car</h2> + a short honest confidence <p>.
+5. IF "Vehicle & documentation details (provided)" appear in context, add <h2 class="feat">Vehicle &amp; Documents</h2> + a <ul> using EXACTLY this order and label format, ONE line each, using ONLY the provided values (omit any line whose value was not provided — do NOT guess or invent):
+   - "Model Year — [value]"
+   - "Registration Year — [value]"
+   - "Import Year — [value]"
+   - "Token Tax Paid upto — [value]"
+   - "Number Plates — [value]" (e.g. "Available (Original)" / "Available (Duplicate)" / "Not available")
+   - "Keys — Immobilizer/Smart ([X]) & Manual ([Y])"
+   - "Number of Ownership — [value]"
+   - "Documents — [status]" (phrase the documents value naturally, e.g. "Verified", "Not available at time of inspection", "Checked at Ad Live")
+   Keep each line short and clean. Do NOT repeat basic specs already in the ad/report (cc, fuel, mileage, colour, city). Omit the whole section if no documentation values provided.
 
-6. IF "Vehicle & documentation details (provided)" appear in context, add <h2 class="feat">Vehicle &amp; Documentation Details</h2> + a <ul> in a clean compact style (one item per line, like: "Manufacture 2014", "Import 2018", "Registered 2018", "Token Tax Paid", "Number plates available", "Documents available", "2 keys available", "PakWheels inspected car"). Use ONLY provided values; never guess. Omit if none provided.
+5b. IF auction sheet content was fetched and contains real data, add <h2 class="feat">Auction Sheet — Verified Condition</h2> + a <ul> with ONLY the fields actually present in the sheet, one per line, no paragraphs: "Auction Grade: …", "Auction House: …", "Auction / Import Date: …", "Transmission: …", "Mileage at auction: …", "Colour at auction: …", "Chassis No: …". Use ONLY values present in the fetched sheet — never invent any value; simply omit a line if that field isn't in the sheet. No explanatory or confidence paragraphs. Omit the whole section if no auction data.
 
-6b. IF auction sheet content was fetched and contains real data, add <h2 class="feat">Auction Sheet — Verified Condition</h2> + a <ul> listing what was actually found: import/auction Grade, auction/import Date, Auction House (if named), and key condition notes. Add one plain sentence explaining how the auction grade reflects the car's original imported condition (helps the buyer trust the car). Use ONLY values present in the fetched sheet — never invent a grade, date, or house name. Omit this section entirely if no auction data was found.
+6. <hr> then <h2 class="feat">Final Listing Description</h2> + <div class="listing-box">. THIS SECTION IS MANDATORY — you MUST always produce it as the LAST section; never omit or skip it. Inside, a short <p> in simple, plain, trustworthy language (like a real seller writing an honest ad — short lines are fine). This is the main deliverable the agent will copy and comes at the END so the agent reviews the breakdown first. HARD LENGTH LIMIT — NON-NEGOTIABLE: the description text (everything inside listing-box EXCLUDING the final disclaimer line) MUST be at most ${cap} CHARACTERS (count every character — letters, spaces, punctuation — NOT words). This is a strict ceiling enforced by PakWheels. Before finishing, COUNT the characters and if you are over ${cap}, rewrite shorter until it fits. Aim for about ${Math.round(cap*0.9)} characters to leave a safe margin. Weave in documentation details and any auction grade/condition naturally. The VERY LAST element inside the listing-box MUST be this exact short line as its own <p class="tagline">: "Inspection reflects vehicle condition at inspection time only. Vehicle remains in use. PDI recommended before purchase. You can visit the inspection report before making an offer." (Do NOT add a separate "PakWheels Inspected Car" paragraph — it is repetitive.)
 
-7. <h2 class="feat">Final Listing Description</h2> + <div class="listing-box"> with short <p> in simple, plain, trustworthy language (like a real seller writing an honest ad — short lines are fine). HARD LENGTH LIMIT — NON-NEGOTIABLE: the description text (everything inside listing-box EXCLUDING the final disclaimer line) MUST be at most ${cap} CHARACTERS (count every character — letters, spaces, punctuation — NOT words). This is a strict ceiling enforced by PakWheels. Before finishing, COUNT the characters and if you are over ${cap}, rewrite shorter until it fits. Aim for about ${Math.round(cap*0.9)} characters to leave a safe margin. Weave in documentation details and any auction grade/condition naturally. The VERY LAST element inside the listing-box MUST be this exact line as its own <p class="tagline"> (you MAY gently simplify the wording for buyer clarity but keep the full meaning): "The report reflects the vehicle's condition at the time of inspection; the inspection date is mentioned in the report for reference. As the vehicle remains in the seller's use, its condition may vary over time. A Pre-Delivery Inspection (PDI) is recommended at the time of transaction to ensure transparency."
-
-8. <h2 class="pitch">Seller Pitch — Negotiation Notes (internal)</h2> + <div class="pitch-box"> with a short <p> intro then a <ul>: based on the WORST findings in the inspection report, give the agent practical talking points to negotiate the price DOWN with the seller/buyer (e.g. which faults justify a price reduction, rough cost impact, what to point out). For each point, suggest in plain words what reference photo or report section to show (e.g. "show the dented rear-left door photo from the report"). This section is the agent's internal aid — keep it candid and practical.
+8. <h2 class="pitch">Seller Pitch — Negotiation Notes (internal)</h2> + <div class="pitch-box"> with a one-line <p> intro ("Use these points to justify a fair price reduction:") then a <ul> of SHORT one-line bullets — ONE line per issue, no paragraphs. Each bullet format: <strong>Issue name</strong> — estimated Pakistani repair/replacement cost (e.g. ~PKR 10–20k), and where useful add "show photo". Keep each bullet to a single short line in simple English. Order by biggest/most expensive issue first. Combine closely related issues into one bullet. Only list issues actually found in the report — do NOT invent or pad. End with ONE final <li><strong>Total:</strong> rough combined repair estimate</li> as the negotiation summary. Do not exaggerate; keep it professional and realistic. Costs are rough Pakistani-market estimates. This is the agent's internal negotiation aid.
 
 STRICT RULES: use ONLY facts in the report + clearly seller-provided extras; NEVER invent features; don't claim "100% original/certified" unless supported; be honest about major faults; no robotic wording; no exaggeration. Do NOT put numbers (1,2,3) in any heading.
 
@@ -839,16 +1285,8 @@ async function generateAd(fromRunAll){
   setStatus('work','Analyzing report…'); wc.textContent='';
   out.innerHTML=`<div class="loading"><div style="text-align:center"><div class="spin"></div><p style="font-weight:700">Building your listing…</p><small style="color:#888">Why to buy · Things to note · Features</small></div></div>`;
   try{
-    const res=await fetch("https://api.anthropic.com/v1/messages",{
-      method:"POST",
-      headers:{"Content-Type":"application/json","x-api-key":key,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},
-      body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:3000,messages:[{role:"user",content:buildPrompt()}]})
-    });
-    if(res.status===401) throw new Error("Invalid API key (401). Check the key from console.anthropic.com.");
-    if(res.status===429) throw new Error("Rate limit or no credit (429). Check your Anthropic balance.");
-    if(!res.ok){ let m=""; try{const j=await res.json(); m=j.error&&j.error.message?(" — "+j.error.message):"";}catch(e){} throw new Error("API responded "+res.status+m); }
-    const data=await res.json();
-    let html=data.content.filter(b=>b.type==="text").map(b=>b.text).join("\n").trim();
+    const data=await callAI(key, buildPrompt(), 4000);
+    let html=extractText(data).trim();
     html=html.replace(/^```html\s*/i,'').replace(/^```\s*/,'').replace(/```$/,'').trim();
     out.innerHTML=`<div class="doc">${html}</div>`;
 
@@ -869,6 +1307,8 @@ async function generateAd(fromRunAll){
     }
 
     lastPlainText=out.innerText.trim();
+    // make the list sections (Why Buy / Attention / Features / Documents) line-toggleable
+    makeListsModular(docEl);
     // The Copy button should copy ONLY the final ad description (the listing-box),
     // NOT the car name, rating, or the internal Seller Pitch.
     const box=out.querySelector('.listing-box');
@@ -887,53 +1327,142 @@ async function generateAd(fromRunAll){
     wc.textContent=descChars+' / '+cap+' chars'+(over?' ⚠ over limit':'');
     wc.style.color = over ? 'var(--pw-red)' : 'var(--muted)';
     wc.style.fontWeight = over ? '800' : '';
+    const cc=$('charCounter');
+    if(cc){ cc.textContent='Final Listing: '+descChars+' / '+cap+' chars'+(over?' ⚠ over':''); cc.classList.toggle('over', over); }
     setStatus('live', over ? 'Ready — but description is over the character limit' : 'Listing ready');
     if(over) toast('Description is over '+cap+' chars — consider regenerating or trimming.');
     else toast('Listing generated!');
-    if($('doResearch').checked) runResearch(key);
+    if($('descActions')) $('descActions').style.display='flex';
   }catch(err){
     const msg=err.message||String(err);
     const net=/Failed to fetch|NetworkError|Load failed/i.test(msg);
-    out.innerHTML=`<div class="errbox"><b>Couldn't generate the listing</b>${net?"Network blocked the request. Check you're online and the API key is valid. Some networks block api.anthropic.com.":msg}</div>`;
-    setStatus('err','Error — try again');
+    const others=['claude','gemini','groq'].filter(x=>x!==currentProvider);
+    const btns=others.map(x=>`<button class="switch-retry" onclick="switchAndRetry('${x}')">Switch to ${PROVIDERS[x].label} &amp; retry</button>`).join('');
+    out.innerHTML=`<div class="errbox"><b>Couldn't generate the listing</b>${net?"Network blocked the request. Check you're online and that the API key is valid. Some networks block the AI provider's API.":msg}<div class="switch-row">${btns}</div></div>`;
+    setStatus('err','Error — try again or switch provider');
   }finally{ if(!fromRunAll){ $('genBtn').disabled=false; } }
+}
+
+// Add a checkbox beside each <li> in the list sections. Untick = excluded from the breakdown copy.
+// Pure local editing — no AI calls, no extra tokens. Checkboxes only (no add/remove controls).
+function makeListsModular(docEl){
+  if(!docEl) return;
+  docEl.querySelectorAll('ul').forEach(ul=>{
+    if(ul.closest('.pitch-box')) return; // leave the seller pitch list alone
+    ul.querySelectorAll(':scope > li').forEach(li=>{
+      if(li.dataset.modular) return;
+      li.dataset.modular='1';
+      li.classList.add('mod-li');
+      const cb=document.createElement('input');
+      cb.type='checkbox'; cb.checked=true; cb.className='mod-cb';
+      cb.addEventListener('change',()=>{ li.classList.toggle('mod-off', !cb.checked); });
+      li.prepend(cb);
+    });
+  });
+}
+
+// Copy the breakdown using ONLY the ticked lines (for the bottom "Copy breakdown" action)
+function copyBreakdown(){
+  const out=$('final-desc'); const doc=out&&out.querySelector('.doc'); if(!doc){ toast('Generate a listing first'); return; }
+  const clone=doc.cloneNode(true);
+  clone.querySelectorAll('li.mod-off').forEach(li=>li.remove());
+  clone.querySelectorAll('.mod-cb,.mod-rm,.mod-add').forEach(el=>el.remove());
+  const txt=clone.innerText.replace(/\n{3,}/g,'\n\n').trim();
+  navigator.clipboard.writeText(txt).then(()=>toast('Breakdown copied (checked lines only)!'));
+}
+
+// switch provider, then re-run generation (only if a key for that provider exists)
+function switchAndRetry(p){
+  setProvider(p);
+  const key=$('apiKey').value.trim();
+  if(!key){ toast('Paste your '+PROVIDERS[p].label+' key (top-right), then Generate'); $('apiKey').focus(); return; }
+  runAll();
 }
 
 function copyDesc(){ if(!lastAdText){ toast('Generate a listing first'); return; } navigator.clipboard.writeText(lastAdText).then(()=>toast('Ad description copied!')); }
 
-function setRStatus(s,t){ $('rdot').className='dot'+(s?' '+s:''); $('rStatus').textContent=t; }
-function copyResearch(){ if(!lastResearch){ toast('Run research first'); return; } navigator.clipboard.writeText(lastResearch).then(()=>toast('Research copied!')); }
+function setRStage(id, state){ const el=$('rs-'+id); if(!el) return; el.classList.remove('work','done','miss'); if(state) el.classList.add(state); }
+function resetRStages(){ ['idle','claude','compile','ready'].forEach(id=>setRStage(id,'')); setRStage('idle','work'); }
 function copyPitch(){ if(!lastPitch){ toast('Generate first'); return; } navigator.clipboard.writeText(lastPitch).then(()=>toast('Pitch notes copied!')); }
 
-async function runResearch(key){
-  const panel=$('researchPanel'); panel.style.display='block';
-  setRStatus('work','Researching…');
-  $('research-out').innerHTML='<div class="loading" style="height:160px"><div style="text-align:center"><div class="spin"></div><p style="font-weight:700">Researching this model…</p></div></div>';
+async function runResearch(){
+  // This now runs ONLY when the user clicks Search in the Market Research section.
+  const key=$('apiKey').value.trim();
+  if(!key){ toast('Paste your '+PROVIDERS[currentProvider].label+' API key (top-right) first'); $('apiKey').focus(); return; }
   const report=$('v-report').value.trim();
-  const prompt=`You are an auto-market research assistant. Based on the inspection/report content below, do TWO things and return clean HTML (only <h3>, <p>, <ul>, <li>, <strong>; no markdown, no code fences):
+  const carName=$('ad-link').value.trim() || $('link-ad').value.trim();
+  if(!report && !carName){ toast('Add an inspection report link/text or ad link first so we know the car'); return; }
 
-<h3>Possibly Missing Features</h3> — Identify the car's make/model/trim, then list features that this trim/segment commonly OFFERS but that are NOT mentioned in this report (so the agent can verify whether the car has them). Label clearly as "verify" items, not confirmed absences.
+  const custom=$('ro-custom')?$('ro-custom').value.trim():'';
+  const want={
+    missing:$('ro-missing')&&$('ro-missing').checked,
+    bestex:$('ro-bestex')&&$('ro-bestex').checked,
+    highex:$('ro-highex')&&$('ro-highex').checked,
+    lowex:$('ro-lowex')&&$('ro-lowex').checked,
+    price:$('ro-price')&&$('ro-price').checked,
+    compare:$('ro-compare')&&$('ro-compare').checked,
+    similar:$('ro-similar')&&$('ro-similar').checked,
+    feature:$('ro-feature')&&$('ro-feature').checked,
+  };
 
-<h3>How Strong Ads Are Written</h3> — Give 4-6 concise, practical pointers on how top-performing ads for this same model are written on classified platforms (structure, what to emphasise, trust signals), as guidance for the agent. Do NOT fabricate specific quotes or claim to have read specific live ads.
+  // gather what the agent ALREADY provided, so "Missing Features" won't re-suggest it
+  const provided=[];
+  [['Documents','d-docs'],['Number plates','d-plates'],['Number of owners','d-owners'],
+   ['Immobilizer/smart keys','d-keys-immo'],['Manual keys','d-keys-manual'],
+   ['Extra details','d-extra']].forEach(([lbl,id])=>{ const v=$(id)?$(id).value.trim():''; if(v) provided.push(lbl+': '+v); });
+  ['d-model','d-reg','d-token','d-import'].forEach(id=>{ const v=$(id)?$(id).value.trim():''; if(v) provided.push(id.replace('d-','')+' set'); });
+  const providedStr = provided.length? provided.join('; ') : '(none entered)';
 
-Keep it tight and useful. REPORT:\n"""\n${report||'(no report text provided — infer from any car name available)'}\n"""`;
+  let sections=[];
+  if(want.missing) sections.push(`<h3>Missing Features</h3> — short bullets of important details/features buyers expect that are NOT yet provided. The agent ALREADY provided: ${providedStr}. Do NOT list any of those as missing. Only flag genuinely absent items (e.g. fuel average, auction grade, tyre condition, smart features).`);
+  if(want.bestex) sections.push('<h3>Best Ad Examples</h3> — 2-3 short ILLUSTRATIVE sample ad blurbs (representative, not real listings) showing how a strong ad for this car typically reads.');
+  if(want.highex) sections.push('<h3>High Price Ad Examples</h3> — 2-3 short illustrative examples of how higher-priced ads for this car are framed and what they emphasize to justify the price.');
+  if(want.lowex) sections.push('<h3>Low Price Ad Examples</h3> — 2-3 short illustrative examples of how lower-priced ads for this car are framed and what they compromise on.');
+  if(want.price) sections.push('<h3>Price Estimation</h3> — three bullets: <li><strong>Most ads positioned around:</strong> PKR X – Y</li> <li><strong>Higher-priced ads highlight:</strong> …</li> <li><strong>Lower-priced ads compromise on:</strong> …</li> Generic estimate, NOT real-time pricing.');
+  if(want.compare) sections.push('<h3>Market Comparison</h3> — short bullets comparing this car to its closest rivals in the Pakistani market (what it does better / worse, why a buyer picks it).');
+  if(want.similar) sections.push('<h3>Similar Cars</h3> — short bullets listing 3-5 similar alternatives buyers also consider in this segment/price range.');
+  if(want.feature) sections.push('<h3>Feature Research</h3> — explain the notable features/trim options this model is known for, and which ones add resale value. Short bullets.');
+  if(custom) sections.push(`<h3>${custom}</h3> — explain, for THIS car, the "${custom}" feature: does this model/variant typically have it, how it works, and whether it adds value. Be honest if it's usually NOT available on this car. Short bullets.`);
+
+  if(!sections.length){ $('research-out').innerHTML='<div class="placeholder" style="height:120px"><p>Pick at least one research option (or type a custom feature), then click Search.</p></div>'; return; }
+
+  const btn=$('researchBtn'); if(btn){ btn.disabled=true; btn.textContent='Searching…'; }
+  resetRStages(); setRStage('idle','done'); setRStage('claude','work');
+  $('research-out').innerHTML='<div class="loading" style="height:140px"><div style="text-align:center"><div class="spin"></div><p style="font-weight:700">Analyzing Ad Trends…</p></div></div>';
+
+  const prompt=`You are an auto-advertising intelligence assistant for the Pakistani used-car market. Help improve the QUALITY and COMPLETENESS of a vehicle ad by reasoning about this exact car.
+
+Use ONLY the vehicle identity (make, model, variant/trim, model year). Do NOT mention inspection reports, auction sheets, or reference documents. Do NOT claim live browsing, scraping, or real-time pricing. No fluff.
+
+Return clean HTML (only <h3>, <ul>, <li>, <strong>; no markdown, no code fences, no <a> links). Produce ONLY these sections, in this order, bullets only:
+
+${sections.join('\n\n')}
+
+STYLE: concise, bullets only, avoid repeating specs, avoid filler. Examples are clearly illustrative samples, not real listings. Maximum ~350 words total.
+
+VEHICLE (identify make/model/variant/year from this):\n"""\n${report||carName||'(infer the car from any name available)'}\n"""`;
   try{
-    const res=await fetch("https://api.anthropic.com/v1/messages",{
-      method:"POST",
-      headers:{"Content-Type":"application/json","x-api-key":key,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},
-      body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1500,messages:[{role:"user",content:prompt}]})
-    });
-    if(!res.ok) throw new Error("Research API "+res.status);
-    const data=await res.json();
-    let html=data.content.filter(b=>b.type==="text").map(b=>b.text).join("\n").trim().replace(/^```html\s*/i,'').replace(/^```\s*/,'').replace(/```$/,'').trim();
+    const data=await callAI(key, prompt, 1000);
+    setRStage('claude','done'); setRStage('compile','work');
+    let html=extractText(data).trim().replace(/^```html\s*/i,'').replace(/^```\s*/,'').replace(/```$/,'').trim();
+    // append a "See photos" link for the custom feature (and the car) — opens real images in a new tab
+    if(custom){
+      const q=encodeURIComponent(((report||carName).split('\n')[0].slice(0,40))+' '+custom);
+      html+=`<div style="margin-top:12px"><a href="https://www.google.com/search?tbm=isch&q=${q}" target="_blank" rel="noopener" style="color:var(--pw-blue);font-weight:700">🔗 See photos: ${custom}</a></div>`;
+    }
     $('research-out').innerHTML=`<div class="doc">${html}</div>`;
     lastResearch=$('research-out').innerText.trim();
-    setRStatus('live','Research ready');
+    setRStage('compile','done'); setRStage('ready','done');
   }catch(err){
     $('research-out').innerHTML=`<div class="errbox" style="margin:0">${err.message}</div>`;
-    setRStatus('err','Research failed');
+    setRStage('claude','miss');
+  } finally {
+    if(btn){ btn.disabled=false; btn.textContent='🔎 Search'; }
   }
 }
+
+// populate the month/year dropdowns now that everything is defined
+populateMY();
 </script>
 </body>
 </html>
