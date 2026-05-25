@@ -286,6 +286,41 @@
   .preview-head{display:flex;align-items:center;gap:9px;margin-bottom:4px}
   .copy-tag{margin-left:auto;color:var(--pw-blue);cursor:pointer;font-size:12px;font-weight:700;background:#e3ecf9;padding:6px 12px;border-radius:7px;transition:.15s}
   .char-counter{margin-left:auto;font-size:12px;font-weight:700;color:var(--muted);background:#eef1f5;padding:6px 12px;border-radius:7px}
+  /* Recommendation cards (additive intelligence layer) */
+  .rec-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin:0 0 18px}
+  .doc .pw-callout{margin-top:12px;font-weight:700;color:#1b7a44;font-size:13px}
+  body.dark .doc .pw-callout{color:#7ee0a5}
+  .rec-card{border:1px solid var(--line);border-left:4px solid #888;border-radius:9px;padding:11px 13px;background:#fafbfc}
+  .rec-card .rc-title{font-size:11px;font-weight:800;margin-bottom:5px;letter-spacing:.02em}
+  .rec-card .rc-msg{font-size:11.5px;line-height:1.5;margin-bottom:6px;color:#444}
+  .rec-card .rc-action{font-size:10.5px;line-height:1.4}
+  .rec-card .rc-action b{font-weight:700}
+  .rec-card.rc-warning{background:#fff7ed;border-color:#fcd9a8;border-left-color:#e08a1e}
+  .rec-card.rc-warning .rc-title,.rec-card.rc-warning .rc-action{color:#9a5a10}
+  .rec-card.rc-good{background:#eafaf0;border-color:#b3e6c7;border-left-color:#1b7a44}
+  .rec-card.rc-good .rc-title,.rec-card.rc-good .rc-action{color:#15663a}
+  .rec-card.rc-concern{background:#fef2f2;border-color:#f5c2c2;border-left-color:#c0392b}
+  .rec-card.rc-concern .rc-title,.rec-card.rc-concern .rc-action{color:#a3251c}
+  .rec-card.rc-info{background:#eef4ff;border-color:#c5d8f5;border-left-color:#1a4480}
+  .rec-card.rc-info .rc-title,.rec-card.rc-info .rc-action{color:#1a4480}
+  .rec-card.rc-nego{background:#f4ecfa;border-color:#ddc5ec;border-left-color:#7a3ea1}
+  .rec-card.rc-nego .rc-title,.rec-card.rc-nego .rc-action{color:#5a2a7a}
+  .rec-card.rc-score{background:#f5f5f7;border-left-color:#555}
+  .rec-card.rc-score .rc-title{color:#333}
+  body.dark .rec-card{background:#1c2029;border-color:#2a2f3a;color:#c4cad6}
+  body.dark .rec-card .rc-msg{color:#c4cad6}
+  body.dark .rec-card.rc-warning{background:#2e2614;border-color:#5e5223}
+  body.dark .rec-card.rc-warning .rc-title,body.dark .rec-card.rc-warning .rc-action{color:#ffd56b}
+  body.dark .rec-card.rc-good{background:#16331f;border-color:#2e7d4a}
+  body.dark .rec-card.rc-good .rc-title,body.dark .rec-card.rc-good .rc-action{color:#7ee0a5}
+  body.dark .rec-card.rc-concern{background:#3a1e1a;border-color:#7a3028}
+  body.dark .rec-card.rc-concern .rc-title,body.dark .rec-card.rc-concern .rc-action{color:#ffb4a8}
+  body.dark .rec-card.rc-info{background:#1a2742;border-color:#2f4368}
+  body.dark .rec-card.rc-info .rc-title,body.dark .rec-card.rc-info .rc-action{color:#9bb8e8}
+  body.dark .rec-card.rc-nego{background:#2a1f38;border-color:#4a3a5e}
+  body.dark .rec-card.rc-nego .rc-title,body.dark .rec-card.rc-nego .rc-action{color:#d9bff0}
+  body.dark .rec-card.rc-score{background:#232834}
+  body.dark .rec-card.rc-score .rc-title{color:#e6e9ef}
   .char-counter.over{color:#fff;background:var(--pw-red)}
   body.dark .char-counter{background:#232834;color:#c4cad6}
   body.dark .char-counter.over{background:var(--pw-red);color:#fff}
@@ -322,13 +357,18 @@
   .mod-add input:focus{outline:none;border-color:var(--pw-blue);border-style:solid}
   .mod-add button{background:var(--pw-blue);color:#fff;border:none;border-radius:6px;padding:0 14px;font-size:12px;font-weight:700;cursor:pointer}
   .mod-add button:hover{background:#0b3a85}
-  .desc-actions-note{font-size:12px;color:var(--muted);font-weight:600;margin-right:auto}
-  .da-btn{border:none;border-radius:8px;padding:9px 16px;font-size:13px;font-weight:700;cursor:pointer;transition:.15s}
+  .da-btn{border:none;border-radius:8px;padding:9px 16px;font-size:13px;font-weight:700;cursor:pointer;transition:.18s}
   .da-copy{background:var(--pw-blue);color:#fff}
   .da-copy:hover{background:#0b3a85}
-  .da-regen{background:#eef1f5;color:#444;border:1.5px solid var(--line)}
-  .da-regen:hover{background:#e3e7ec}
-  body.dark .da-regen{background:#232834;border-color:#3a4152;color:#c4cad6}
+  .da-break{background:#eef1f5;color:#444;border:1.5px solid var(--line)}
+  .da-break:hover{background:#e3e7ec}
+  body.dark .da-break{background:#232834;border-color:#3a4152;color:#c4cad6}
+  /* Regenerate — green idle, amber/busy while running */
+  .da-regen{background:#1b7a44;color:#fff;border:none}
+  .da-regen:hover{background:#15663a}
+  .da-regen.busy{background:#e0b020;color:#5a4500;cursor:not-allowed;pointer-events:none}
+  body.dark .da-regen{background:#1f8a4e} body.dark .da-regen:hover{background:#15663a}
+  body.dark .da-regen.busy{background:#e6b800;color:#2a2000}
   .doc .car-header h1{margin:0}
   .doc .rating-badge{display:inline-flex;align-items:center;gap:6px;background:#ffd54a;color:#1a1a1a;padding:5px 13px;border-radius:20px;font-size:12px;font-weight:700;border:1.5px solid #e0b020}
   .doc .rating-badge b{color:#1a1a1a;font-size:14px}
@@ -347,6 +387,29 @@
   .doc li{position:relative;padding:6px 0 6px 22px;line-height:1.55;border-bottom:1px dashed var(--line);font-size:13.5px}
   .doc li:last-child{border-bottom:none}
   .doc li::before{content:"";position:absolute;left:3px;top:12px;width:7px;height:7px;background:var(--pw-blue);border-radius:50%}
+  /* modular breakdown lists: TWO columns (short labels), no redundant dot (checkbox is the marker) */
+  .doc ul:has(.mod-li){display:grid;grid-template-columns:1fr 1fr;gap:0 22px}
+  .doc li.mod-li{padding-left:2px;border-bottom:1px dashed var(--line)}
+  .doc li.mod-li::before{display:none}
+  @media(max-width:760px){ .doc ul:has(.mod-li){grid-template-columns:1fr} }
+  /* Field — Value aligned rows (Documents & Auction) */
+  .doc li.mod-li:has(.fld){gap:6px}
+  .doc .fld{color:var(--muted);font-size:12px;min-width:120px;flex-shrink:0}
+  .doc .val{font-weight:700;color:var(--ink)}
+  body.dark .doc .val{color:#e6e9ef}
+  @media(max-width:760px){ .doc .fld{min-width:96px} }
+  /* spec table (Item | Score | Note) */
+  .doc .spec-table{width:100%;border-collapse:collapse;margin:0 0 14px;font-size:13px}
+  .doc .spec-table th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);font-weight:700;padding:6px 10px;border-bottom:2px solid var(--line)}
+  .doc .spec-table td{padding:7px 10px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.45}
+  .doc .spec-table tr:last-child td{border-bottom:none}
+  .doc .spec-table td:nth-child(1){font-weight:700;color:var(--ink);white-space:nowrap}
+  .doc .spec-table td:nth-child(2){font-weight:700;color:var(--green);white-space:nowrap}
+  .doc h2.attn ~ .spec-table td:nth-child(2),.doc .spec-table.attn td:nth-child(2){color:var(--amber)}
+  .doc .spec-table td:nth-child(3){color:var(--muted)}
+  body.dark .doc .spec-table td:nth-child(1){color:#e6e9ef}
+  body.dark .doc .spec-table td:nth-child(3){color:#aab2c0}
+  @media(max-width:760px){ .doc .spec-table{font-size:12px} .doc .spec-table th,.doc .spec-table td{padding:5px 6px} }
   .doc blockquote{background:var(--green-soft);border-left:4px solid var(--green);padding:12px 15px;border-radius:0 9px 9px 0;margin:13px 0;font-size:13px}
   .doc blockquote strong{color:var(--green)}
   .doc .listing-box{background:#fffdf4;border:1.5px dashed #e0b94e;border-radius:11px;padding:18px 20px}
@@ -574,12 +637,7 @@
       </div>
     </div>
 
-    <div class="input-group">
-      <div class="ainote">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M12 2a7 7 0 0 0-4 12.7V17a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-2.3A7 7 0 0 0 12 2zM9 22h6"/></svg>
-        <span>Powered by AI (<span id="aiProviderLabel">Claude</span>). We use AI tools to draft this listing — <b>AI can make mistakes, please review the description before posting.</b></span>
-      </div>
-    </div>
+    <span id="aiProviderLabel" style="display:none">Claude</span>
 
     <div class="btnrow">
       <button class="gen-btn" id="genBtn" onclick="runAll()">
@@ -596,7 +654,7 @@
   <!-- SELLER PITCH (separate card, under the input column) -->
   <div class="panel" id="pitchPanel">
     <div class="preview-head">
-      <h2 style="margin:0;color:#7a3ea1">📞 Seller Pitch — Call &amp; Negotiation (Insider Tips)</h2>
+      <h2 style="margin:0;color:#7a3ea1">📞 Seller Pitch (Insider Tips)</h2>
       <span class="copy-tag" onclick="copyPitch()" style="background:#f0e6f8;color:#7a3ea1">📋 Copy</span>
     </div>
     <div class="rsub">When you call the customer, these honest talking points (based on the inspection findings) help you justify and negotiate the price. They appear here after you generate.</div>
@@ -661,6 +719,7 @@
       <span class="dot" id="dot"></span><span id="statusText">Waiting for report</span>
       <span class="wcount" id="wc"></span>
     </div>
+    <div id="recCards" class="rec-cards" style="display:none"></div>
     <div id="final-desc">
       <div class="placeholder">
         <div class="em">🚘</div>
@@ -668,10 +727,9 @@
       </div>
     </div>
     <div class="desc-actions" id="descActions" style="display:none">
-      <span class="desc-actions-note">Review the listing above, then:</span>
       <button class="da-btn da-copy" onclick="copyDesc()" type="button">📋 Copy Final Listing</button>
-      <button class="da-btn da-regen" onclick="copyBreakdown()" type="button">📋 Copy Breakdown (checked)</button>
-      <button class="da-btn da-regen" onclick="runAll()" type="button">🔄 Regenerate</button>
+      <button class="da-btn da-break" onclick="copyBreakdown()" type="button">📋 Copy Breakdown (checked)</button>
+      <button class="da-btn da-regen" id="regenBtn" onclick="doRegenerate()" type="button">🔄 Regenerate</button>
     </div>
   </div>
 
@@ -910,6 +968,15 @@ updateProviderDetail();
 setStage('wait','work');
 resetRStages();
 
+// keep the header char-counter cap in sync with the Max Characters box (Point 2)
+function syncCharCap(){
+  const cap=parseInt($('wordcap').value)||995;
+  const cc=$('charCounter');
+  if(cc && !cc.dataset.live){ cc.textContent='Final Listing: — / '+cap+' chars'; }
+}
+$('wordcap').addEventListener('input',syncCharCap);
+syncCharCap();
+
 function toggleAcc(){ $('accAdv').classList.toggle('open'); }
 
 // Month + Year dropdown logic
@@ -961,6 +1028,9 @@ function resetForm(){
   if($('pdfDropText')) $('pdfDropText').textContent='Click to choose a PDF inspection report';
   resetGenBtn();
   resetStages();
+  if($('recCards')){ $('recCards').innerHTML=''; $('recCards').style.display='none'; }
+  if($('descActions')) $('descActions').style.display='none';
+  if($('charCounter')){ $('charCounter').dataset.live=''; $('charCounter').classList.remove('over'); }
   if($('pitch-out')) $('pitch-out').innerHTML='<div class="placeholder" style="height:120px"><p>Negotiation points will appear here after you Generate the description.</p></div>';
   lastPitch='';
   window.__adText='';
@@ -1064,6 +1134,14 @@ async function fetchViaProxies(url, onStep){
     }catch(e){}
   }
   return null;
+}
+
+// Regenerate with click-once busy state: turns amber + disabled while running, returns to idle when done
+async function doRegenerate(){
+  const b=$('regenBtn');
+  if(b){ if(b.classList.contains('busy')) return; b.classList.add('busy'); b.textContent='⏳ Regenerating…'; }
+  try{ await runAll(); }
+  finally{ if(b){ b.classList.remove('busy'); b.textContent='🔄 Regenerate'; } }
 }
 
 // ONE button does it all: fetch → analyze → generate
@@ -1236,31 +1314,29 @@ function buildPrompt(){
 
   return `You are an automotive evaluation and sales assistant for used cars on PakWheels. Analyze the report and produce a buyer-friendly listing in THREE clear phases.
 
-Return clean HTML using ONLY: <h1>, <div class="car-header">, <h2 class="good|attn|feat|pitch"> (plain text heading, NO span/badge/number inside), <h3>, <p>, <ul>, <li>, <strong>, <blockquote>, <hr>, <div class="rating-badge">, <div class="listing-box">, <div class="pitch-box">, <p class="tagline">, and cost spans. No markdown, no code fences, no <html>/<head>/<body>. Do NOT put "PHASE", numbers, or any badge span inside headings — headings are plain text only.
+Return clean HTML using ONLY: <h1>, <div class="car-header">, <h2 class="good|attn|feat|pitch"> (plain text heading, NO span/badge/number inside), <h3>, <p>, <ul>, <li>, <strong>, <table class="spec-table">, <tr>, <th>, <td>, <blockquote>, <hr>, <div class="rating-badge">, <div class="listing-box">, <div class="pitch-box">, <p class="tagline">, <p class="pw-callout">, <span class="fld">, <span class="val">, and cost spans. No markdown, no code fences, no <html>/<head>/<body>. Do NOT put "PHASE", numbers, or any badge span inside headings — headings are plain text only.
 
 STRUCTURE (exact order):
 1. <div class="car-header"><h1>car name + year</h1> followed (if a rating exists) by <div class="rating-badge">Inspection <b>X/10</b></div></div> — both on the SAME row. (Reference only — not part of the copyable description.)
 
-2. <hr> then <h2 class="good">Why You Should Buy This Car</h2> + a <ul> of SHORT point-wise inspection highlights (NOT paragraphs). Each <li> is one short line, prefixed with "✔ ", drawn from the report's strengths — e.g. "✔ Engine &amp; Gearbox: 100%", "✔ AC Performance: 100%", "✔ Brakes &amp; Suspension: 100%", "✔ Structurally clear body (accident-free)", "✔ PakWheels inspected car". 4-6 lines max. No storytelling, no emotional sales writing. Buyer should grasp condition in 5-10 seconds.
+2. <hr> then <h2 class="good">Why You Should BUY This Car</h2> + a <table class="spec-table"> with a header row <tr><th>Item</th><th>Score</th><th>Note</th></tr> then one <tr> per strength: <td>Item</td><td>SCORE%</td><td>SHORT note (keep it to a few words, one short line — e.g. "smooth, no leaks", "ABS working", "cools well", "good usable life")</td>. Rows to include where supported: Engine & Gearbox, Brakes, Suspension/Steering, AC/Heater, Electricals, Interior, Tyres, Body Frame, and Auction Grade (Score column = "Grade 4", Note = "Japan-verified, TAA Kantou"). Keep notes SHORT so each fits one line. Use ONLY scores/facts supported by the report.
 
-3. <h2 class="attn">Things That Need Attention</h2> + ONE short italic framing line as a <p>: "Listed openly so there's no confusion — this is a used car, kept honest:". Then a <ul> of SHORT wear/repair points, ONE short line each, prefixed "✔ ". Use plain, calm wording — NEVER fear-based or over-detailed. GOOD: "✔ Rear door dent", "✔ Minor body scratches", "✔ Roof paint faded", "✔ Tyres aging but usable". BAD: "Large dent with extensive scratches and body damage". You MAY add a tiny cost tag where useful: <span class="cost low">Minor</span> / <span class="cost mod">Moderate</span>. Do NOT over-dramatize normal cosmetic wear. Keep it tight.
+3. <h2 class="attn">Things That Need Attention</h2> + a <table class="spec-table"> with header <tr><th>Item</th><th>Score</th><th>Note</th></tr> then one <tr> per genuine concern: <td>Area</td><td>SCORE%</td><td>SHORT calm note (e.g. "some dents & paint work")</td>. Plain, calm wording — NEVER fear-based or over-detailed. Do NOT over-dramatize normal used-car wear. Often just 1-3 rows.
 
-4. <h2 class="feat">Main Features</h2> + <ul> of ONLY meaningful, buyer-visible features (short, one per line). Examples worth listing: Rear Camera, ABS, Power Windows, Central Locking, Cruise Control, Push Start, Android Panel, Sunroof, Parking Sensors, Radar, HID, Alloy Rims, Climate Control, Airbags, 7D Mats, plus seller extras. DO NOT list basic/obvious confirmations like "Audio/video system working". Where a feature is inspection-verified, note "(based on inspection)" — use "based on inspection", NOT "confirmed by inspection". If a PW Ad link was provided, only add features the ad is MISSING. NEVER invent a feature — only list what the report/fields support.
+4. <h2 class="feat">Key Features</h2> + <ul> of the car's meaningful features as a plain simple list (one per line, no "based on inspection" suffix needed unless useful): e.g. "1.0L Petrol Engine", "Automatic Transmission", "Power Steering", "Air Conditioning", "Central Locking", "ABS Brakes", "Airbags", "Immobilizer", "Power Windows", "Rear Camera", "Push Start", "Alloy Rims", plus seller extras. Drop basic/obvious confirmations like "Audio/video system working". NEVER invent a feature — only list what the report/fields support.
 
-5. IF "Vehicle & documentation details (provided)" appear in context, add <h2 class="feat">Vehicle &amp; Documents</h2> + a <ul> using EXACTLY this order and label format, ONE line each, using ONLY the provided values (omit any line whose value was not provided — do NOT guess or invent):
-   - "Model Year — [value]"
-   - "Registration Year — [value]"
-   - "Import Year — [value]"
-   - "Token Tax Paid upto — [value]"
-   - "Number Plates — [value]" (e.g. "Available (Original)" / "Available (Duplicate)" / "Not available")
-   - "Keys — Immobilizer/Smart ([X]) & Manual ([Y])"
-   - "Number of Ownership — [value]"
-   - "Documents — [status]" (phrase the documents value naturally, e.g. "Verified", "Not available at time of inspection", "Checked at Ad Live")
-   Keep each line short and clean. Do NOT repeat basic specs already in the ad/report (cc, fuel, mileage, colour, city). Omit the whole section if no documentation values provided.
+5. IF "Vehicle & documentation details (provided)" appear in context, add <h2 class="feat">Vehicle &amp; Documents</h2> + a <ul> where EACH <li> wraps the field name and value in spans like: <li><span class="fld">Model Year</span><span class="val">[value]</span></li>. Use EXACTLY this order and these field labels, ONLY for values that were provided (omit any whose value is missing — never guess):
+   Model Year / Registration Year / Import Year / Token Tax Paid upto / Number Plates (value e.g. "Available (Original)" / "Available (Duplicate)" / "Not available") / Keys (value e.g. "Immobilizer/Smart (2) & Manual (1)") / Number of Ownership / Documents (value e.g. "Verified" / "Not available at inspection" / "Checked at Ad Live").
+   Do NOT repeat basic specs already in the ad/report (cc, fuel, mileage, colour, city). Omit the whole section if no documentation values provided.
 
-5b. IF auction sheet content was fetched and contains real data, add <h2 class="feat">Auction Sheet — Verified Condition</h2> + a <ul> with ONLY the fields actually present in the sheet, one per line, no paragraphs: "Auction Grade: …", "Auction House: …", "Auction / Import Date: …", "Transmission: …", "Mileage at auction: …", "Colour at auction: …", "Chassis No: …". Use ONLY values present in the fetched sheet — never invent any value; simply omit a line if that field isn't in the sheet. No explanatory or confidence paragraphs. Omit the whole section if no auction data.
+5b. IF auction sheet content was fetched and contains real data, add <h2 class="feat">Auction Sheet — Verified Condition</h2> + a <ul> where EACH <li> wraps label and value in spans: <li><span class="fld">Auction Grade</span><span class="val">[value]</span></li>. Include ONLY fields actually present in the sheet, using these labels: Auction Grade / Auction House / Auction / Import Date / Transmission / Mileage at auction / Colour at auction / Chassis No. Use ONLY values present in the fetched sheet — never invent; omit a field if it isn't there. No explanatory paragraphs. Omit the whole section if no auction data.
 
-6. <hr> then <h2 class="feat">Final Listing Description</h2> + <div class="listing-box">. THIS SECTION IS MANDATORY — you MUST always produce it as the LAST section; never omit or skip it. Inside, a short <p> in simple, plain, trustworthy language (like a real seller writing an honest ad — short lines are fine). This is the main deliverable the agent will copy and comes at the END so the agent reviews the breakdown first. HARD LENGTH LIMIT — NON-NEGOTIABLE: the description text (everything inside listing-box EXCLUDING the final disclaimer line) MUST be at most ${cap} CHARACTERS (count every character — letters, spaces, punctuation — NOT words). This is a strict ceiling enforced by PakWheels. Before finishing, COUNT the characters and if you are over ${cap}, rewrite shorter until it fits. Aim for about ${Math.round(cap*0.9)} characters to leave a safe margin. Weave in documentation details and any auction grade/condition naturally. The VERY LAST element inside the listing-box MUST be this exact short line as its own <p class="tagline">: "Inspection reflects vehicle condition at inspection time only. Vehicle remains in use. PDI recommended before purchase. You can visit the inspection report before making an offer." (Do NOT add a separate "PakWheels Inspected Car" paragraph — it is repetitive.)
+6. <hr> then <h2 class="feat">Final Listing Description</h2> + <div class="listing-box">. THIS SECTION IS MANDATORY — you MUST always produce it as the LAST section; never omit or skip it. This is the main deliverable the agent will copy into the PakWheels "Seller's Comments" field. Write everything in SIMPLE, EVERYDAY ENGLISH that any buyer can understand at a glance — short words, short lines, no formal or complex phrasing. Format it as PLAIN POINT-WISE TEXT (NOT a flowing paragraph), using simple sub-headings and short lines, in this exact structure:
+   <p><strong>Why You Should BUY This Car</strong></p> then short simple lines (use <br> between them, NOT bullet symbols), e.g. "Engine & gearbox 100% – runs smooth, drives easy", "Brakes & suspension 100% – safe and comfortable", "AC 100% – cools well", "Tyres 77% – good usable life left".
+   <p><strong>Things That Need Attention</strong></p> then short simple line(s) like "Body 54% – some dents & paint work needed".
+   <p><strong>Key Features</strong></p> then a short simple list of features, one per line via <br> (1.0L Petrol Engine, Automatic, Power Steering, AC, Central Locking, ABS, Airbags, Immobilizer, etc.).
+   <p> then documentation as dash-prefixed simple lines via <br>: "- Documents not checked by PakWheels", "- Number plates available", "- Token tax cleared", "- 1st Owner", "- Manufacture 2017", "- Import Year 2020", "- Registered 2020", "- 2 keys available" — use ONLY provided/known values. DO NOT include the chassis number anywhere in this Final Listing Description box.
+   HARD LENGTH LIMIT — NON-NEGOTIABLE: all text inside listing-box EXCLUDING the final disclaimer line MUST be at most ${cap} CHARACTERS (count every character). Before finishing, COUNT and if over ${cap}, trim lines until it fits. Aim for about ${Math.round(cap*0.9)} characters. The VERY LAST element inside the listing-box MUST be this EXACT simple line as its own <p class="tagline">: "This report shows the car's condition on the inspection day. The car is still in use, so it may change. Please do a final check (PDI) and read the full inspection report before you buy." Immediately AFTER the listing-box (outside it), add one final <p class="pw-callout">Mention PakWheels.com when calling the Seller to get a good deal.</p>
 
 8. <h2 class="pitch">Seller Pitch — Negotiation Notes (internal)</h2> + <div class="pitch-box"> with a one-line <p> intro ("Use these points to justify a fair price reduction:") then a <ul> of SHORT one-line bullets — ONE line per issue, no paragraphs. Each bullet format: <strong>Issue name</strong> — estimated Pakistani repair/replacement cost (e.g. ~PKR 10–20k), and where useful add "show photo". Keep each bullet to a single short line in simple English. Order by biggest/most expensive issue first. Combine closely related issues into one bullet. Only list issues actually found in the report — do NOT invent or pad. End with ONE final <li><strong>Total:</strong> rough combined repair estimate</li> as the negotiation summary. Do not exaggerate; keep it professional and realistic. Costs are rough Pakistani-market estimates. This is the agent's internal negotiation aid.
 
@@ -1328,11 +1404,12 @@ async function generateAd(fromRunAll){
     wc.style.color = over ? 'var(--pw-red)' : 'var(--muted)';
     wc.style.fontWeight = over ? '800' : '';
     const cc=$('charCounter');
-    if(cc){ cc.textContent='Final Listing: '+descChars+' / '+cap+' chars'+(over?' ⚠ over':''); cc.classList.toggle('over', over); }
+    if(cc){ cc.textContent='Final Listing: '+descChars+' / '+cap+' chars'+(over?' ⚠ over':''); cc.classList.toggle('over', over); cc.dataset.live='1'; }
     setStatus('live', over ? 'Ready — but description is over the character limit' : 'Listing ready');
     if(over) toast('Description is over '+cap+' chars — consider regenerating or trimming.');
     else toast('Listing generated!');
     if($('descActions')) $('descActions').style.display='flex';
+    try{ renderRecommendations(extractRecommendations()); }catch(e){}
   }catch(err){
     const msg=err.message||String(err);
     const net=/Failed to fetch|NetworkError|Load failed/i.test(msg);
@@ -1341,6 +1418,71 @@ async function generateAd(fromRunAll){
     out.innerHTML=`<div class="errbox"><b>Couldn't generate the listing</b>${net?"Network blocked the request. Check you're online and that the API key is valid. Some networks block the AI provider's API.":msg}<div class="switch-row">${btns}</div></div>`;
     setStatus('err','Error — try again or switch provider');
   }finally{ if(!fromRunAll){ $('genBtn').disabled=false; } }
+}
+
+// ===== Recommendation Cards (additive intelligence layer; no AI call, no extra tokens) =====
+function renderRecommendationCard(c){
+  const icon={warning:'⚠',good:'✔',concern:'●',info:'ℹ',nego:'◆',score:'★'}[c.type]||'•';
+  const cls={warning:'rc-warning',good:'rc-good',concern:'rc-concern',info:'rc-info',nego:'rc-nego',score:'rc-score'}[c.type]||'';
+  const div=document.createElement('div');
+  div.className='rec-card '+cls;
+  div.innerHTML=`<div class="rc-title">${icon} ${c.title}</div><div class="rc-msg">${c.message}</div>`+
+    (c.action?`<div class="rc-action"><b>${c.actionLabel||'Action'}:</b> ${c.action}</div>`:'');
+  return div;
+}
+function renderRecommendations(arr){
+  const wrap=$('recCards'); if(!wrap) return;
+  wrap.innerHTML='';
+  if(!arr.length){ wrap.style.display='none'; return; }
+  arr.slice(0,6).forEach(c=>wrap.appendChild(renderRecommendationCard(c)));
+  wrap.style.display='grid';
+}
+// Build cards from data we already have — inspection text, documentation fields, pitch, research.
+function extractRecommendations(){
+  const cards=[];
+  const text=(lastPlainText||'').toLowerCase();
+  // helper: find a percentage for a labelled item in the generated text
+  const pct=(label)=>{ const m=(lastPlainText||'').match(new RegExp(label+"[^0-9]{0,20}(\\d{1,3})\\s*%","i")); return m?parseInt(m[1]):null; };
+
+  // 1) STRONG SELLING POINT — high-scoring mechanicals
+  const eng=pct('engine'), ac=pct('ac'), susp=pct('suspension'), brakes=pct('brake');
+  const strong=[]; if(eng>=95)strong.push('Engine'); if(ac>=95)strong.push('AC'); if(susp>=95)strong.push('Suspension'); if(brakes>=95)strong.push('Brakes');
+  if(strong.length){ cards.push({type:'good',title:'STRONG SELLING POINT',message:strong.join(', ')+(strong.length>1?' all score high':' scores high')+' in the inspection.',actionLabel:'Hook',action:'Lead the call with the car\u2019s mechanical health.'}); }
+
+  // 2) BUYER CONCERN — low-scoring areas / wear
+  const body=pct('exterior')||pct('body'), tyres=pct('tyre');
+  const concerns=[]; if(body!==null&&body<70)concerns.push('Body '+body+'% (cosmetic work)'); if(tyres!==null&&tyres<80)concerns.push('Tyres '+tyres+'% (aging)');
+  if(/dent|scratch|faded|poshish|repaint/.test(text)&&!concerns.length)concerns.push('Some cosmetic wear noted');
+  if(concerns.length){ cards.push({type:'concern',title:'BUYER CONCERN',message:concerns.join('; ')+'.',actionLabel:'Action',action:'Show photos and set expectations early.'}); }
+
+  // 3) MISSING INFO — documentation gaps from the actual fields
+  const miss=[];
+  const docsV=$('d-docs')?$('d-docs').value:''; if(/not available|didn.t ask/i.test(docsV))miss.push('documents');
+  if($('d-token')&&!$('d-token').value.trim())miss.push('token tax date');
+  if($('d-keys-immo')&&!$('d-keys-immo').value.trim()&&$('d-keys-manual')&&!$('d-keys-manual').value.trim())miss.push('keys');
+  if(!/fuel average|km\/l|kmpl/i.test(text))miss.push('fuel average');
+  if(miss.length){ cards.push({type:'info',title:'MISSING INFO',message:'Not shown yet: '+miss.slice(0,3).join(', ')+'.',actionLabel:'Action',action:'Ask the seller to provide before Ad Live.'}); }
+
+  // 4) NEGOTIATION — from the seller pitch total if present
+  if(lastPitch){
+    const m=lastPitch.match(/total[^0-9]{0,15}([0-9][0-9,\u2013\-\s]*k?)/i);
+    cards.push({type:'nego',title:'NEGOTIATION',message:m?('Approx repair basis: PKR '+m[1].trim()+'.'):'Use the documented wear items to justify a fair reduction.',actionLabel:'Angle',action:'Anchor the offer to real repair costs.'});
+  }
+
+  // 5) PRICE POSITION — only real if research price was run; else soft prompt
+  if(lastResearch&&/price|pkr|lac|positioned around/i.test(lastResearch)){
+    cards.push({type:'warning',title:'PRICE POSITION',message:'Market positioning available in the research panel below.',actionLabel:'Action',action:'Compare your asking price to the estimated range.'});
+  } else {
+    cards.push({type:'warning',title:'PRICE POSITION',message:'No market estimate yet for this car.',actionLabel:'Action',action:'Tick Price Estimation in Market Research \u2192 Search.'});
+  }
+
+  // 6) AD QUALITY SCORE — simple heuristic from completeness
+  let score=70; if(strong.length)score+=8; if(!miss.length)score+=12; else score-=miss.length*3; if(lastPitch)score+=5; if(concerns.length)score-=2;
+  score=Math.max(40,Math.min(98,score));
+  const weak=miss.length?('add '+miss.slice(0,2).join(' & ')):'looks complete';
+  cards.push({type:'score',title:'AD QUALITY SCORE',message:score+' / 100 — '+(score>=85?'strong listing':score>=70?'good, improvable':'needs more info')+'.',actionLabel:'Improve',action:weak});
+
+  return cards;
 }
 
 // Add a checkbox beside each <li> in the list sections. Untick = excluded from the breakdown copy.
